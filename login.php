@@ -43,10 +43,11 @@
         $id = $row['id'];
         $access_level = $row['access_level'];
 
+        $_SESSION["logged_in"] = 1;
         $_SESSION["username"] = $username;
         $_SESSION["id"] = $id;
         $_SESSION["access_level"] = $access_level;
-        header('Location: pagrindinis.php');
+        header('Location: index.php');
       }
       else 
       {

@@ -8,12 +8,6 @@
             HTML,
 	);
 
-	/**
-     * getHeader($title)
-     * Returns the HTML headers.
-	 * @param   string  $title     The title to use for the page.
-	 * @return  string              The HTML header content.
-	 */
     function getHeader(string $title = "Untitled", array $addons = []): string
 	{
 		global $CSS_ADDONS;
@@ -29,8 +23,8 @@
             <!-- Google Font: Source Sans Pro -->
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
             
-            <!-- [CSS] -->
-            <!-- Main Stylesheet --> 	<link rel="stylesheet" href="assets/css/style.css">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
         HTML;
 
 		// For every addon in the addons array, get all the links from $CSS_ADDONS and append to header.
@@ -38,7 +32,7 @@
 
 		// Append the title and close the header.
 		return $header . <<<HTML
-			<title>$title</title>
+			<title>Siuntos - $title</title>
 		</head>
 		HTML;
 	}
