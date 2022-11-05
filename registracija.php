@@ -34,7 +34,7 @@
     else
     {
         $_SESSION["registration_success"] = "Registracija sėkminga. Prašome prisijungti";
-        header('Location: login.php');
+        header('Location: prisijungimas.php');
     }
     mysqli_close($dbc);
     exit();
