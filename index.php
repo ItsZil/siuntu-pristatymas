@@ -1,8 +1,8 @@
 <?php
 $server = "localhost";
 $db = "siuntu_tarnyba";
-$user = "siuntu_tarnyba";
-$password = "siuntu_tarnyba";
+$user = "root";
+$password = "";
 // prisijungimas prie DB
 $dbc=mysqli_connect($server,$user,$password,$db);
 
@@ -58,20 +58,23 @@ if (!$dbc)
                 </li>
 
                 <li class='nav-item'>
-                  <a class='nav-link' href=''>Test</a>
+                  <a class='nav-link' href='terminals.php'>Paštomatai</a>
                 </li>
 
                 <li class='nav-item'>
-                  <a class='nav-link' href=''>Test2</a>
+                  <a class='nav-link' href='question.php'>Klauskite</a>
                 </li>
+                  <li class='nav-item'>
+                      <a class='nav-link' href='newparcel.php'>Siuntos registravimas</a>
+                  </li>
 
                 <?php
                   # MENU
-                  if ($_SESSION["access_level"] == 1) # Klientas
+                  if ($_SESSION["access_level"] == 2) # Kurjeris
                   {
                     echo
                       "<li class='nav-item'>
-                          <a class='nav-link' href=''>Kliento</a>
+                          <a class='nav-link' href='courier.php'>Kurjeris</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius

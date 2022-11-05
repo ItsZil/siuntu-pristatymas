@@ -1,8 +1,8 @@
 <?php
   $server = "localhost";
   $db = "siuntu_tarnyba";
-  $user = "siuntu_tarnyba";
-  $password = "siuntu_tarnyba";
+  $user = "root";
+  $password = "";
   $lentele = "users";
   $dbc=mysqli_connect($server,$user,$password,$db);
 
