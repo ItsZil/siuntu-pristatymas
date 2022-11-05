@@ -57,6 +57,10 @@ if (!$dbc)
                   <a class='nav-link' href="index.php">Pagrindinis</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="sekimas.php">Sekimas</a>
+                </li>
+
                 <li class='nav-item'>
                   <a class="nav-link active" aria-current="page" href="klausti.php">Klausti</a>
                 </li>

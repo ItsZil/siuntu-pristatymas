@@ -73,6 +73,10 @@ if (!$dbc)
                   <a class="nav-link" href="index.php">Pagrindinis</a>
                   </li>
 
+                  <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="sekimas.php">Sekimas</a>
+                  </li>
+
                   <li class='nav-item'>
                       <a class='nav-link' href='klausti.php'>Klausti</a>
                   </li>
@@ -160,7 +164,6 @@ if (!$dbc)
                         <input type="text" class="form-control" id="phone" name="phone" maxlength="12" required>
                         <br>
 
-                        <!-- Create a select field asking if delivery should be to an address or a pick up point -->
                         <label for="delivery_method" class="form-label">Pristatymo būdas</label>
                         <select class="form-select" id="delivery_method" name="delivery_method" required>
                             <option value="pick_up_point_method">Paštomatas</option>
@@ -168,7 +171,6 @@ if (!$dbc)
                         </select>
                         <br>
 
-                        <!-- If delivery is to an address, show the address fields -->
                         <div id="address_method" hidden>
                             <label for="address" class="form-label">Siuntėjo adresas</label>
                             <input type="text" class="form-control" id="sender_address" name="sender_address" maxlength="100" required>
@@ -190,7 +192,6 @@ if (!$dbc)
                             <input type="text" class="form-control" id="recipient_post_code" name="recipient_post_code" maxlength="10" required>
                         </div>
 
-                        <!-- If delivery is to a pick_up_point create a select field with hidden ids for each pick up point -->
                         <div id="pick_up_method">
                             <label for="pick_up_point" class="form-label>">Siuntos paiemimo paštomatas</label>
                             <select class="form-select" id="pick_up_point" name="pick_up_point" required>
@@ -198,7 +199,7 @@ if (!$dbc)
                                 <option value="2">Rimi Varniai, Kaunas</option>
                             </select>
                             <br>
-                            <label for="delivery_point" class="form-label>">Siuntos pristatymo paštomatas</label>
+                            <label for="delivery_point" class="form-label">Siuntos pristatymo paštomatas</label>
                             <select class="form-select" id="delivery_point" name="delivery_point" required>
                                 <option value="1">KTU Studentų Miestelis, Kaunas</option>
                                 <option value="2">Rimi Varniai, Kaunas</option>
@@ -206,7 +207,6 @@ if (!$dbc)
                         </div>
 
                         <br>
-                        <!-- have the following 3 fields on the same line -->
                         <label for="price" class="form-label">Siuntos kaina:</label>
                         <div class="input-group mb3">
                             <input type="text" class="form-control" id="price" name="price" readonly>

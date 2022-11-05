@@ -17,14 +17,7 @@ if (isset($_POST["logout"]))
     $_SESSION = array();
     header('Location: index.php');
 }
-# Siuntos registravimas
-if (isset($_POST["register_package"]))
-{
-    $package_weight = $_POST["package_weight"];
-    $package_size = $_POST["package_size"];
 
-    header('Location: siuntos_registravimas.php');
-}
 
 if (!isset($_SESSION["username"]))
 {
@@ -36,6 +29,23 @@ else
     $_SESSION["logged_in"] = 1;
     $user_id = $_SESSION["id"];
     $access_level = $_SESSION["access_level"];
+}
+
+# Siuntos sekimas
+if (isset($_POST["track_package"]))
+{
+    $_SESSION['package_tracking_number'] = $_POST["package_tracking_number"];
+
+    header('Location: sekimas.php');
+}
+
+# Siuntos registravimas
+if (isset($_POST["register_package"]))
+{
+    $package_weight = $_POST["package_weight"];
+    $package_size = $_POST["package_size"];
+
+    header('Location: siuntos_registravimas.php');
 }
 
 if (!$dbc)
@@ -63,6 +73,10 @@ if (!$dbc)
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="index.php">Pagrindinis</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="sekimas.php">Sekimas</a>
                 </li>
 
                 <li class='nav-item'>
@@ -171,8 +185,8 @@ if (!$dbc)
                             <!-- Package tracking form -->
                             <form method="post">
                                 <div class="mb-3">
-                                    <label for="package_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
-                                    <input type="text" class="form-control" id="package_id" placeholder="Siuntos numeris" required>
+                                    <label for="package_tracking_number" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
+                                    <input type="number" class="form-control" name="package_tracking_number" placeholder="Siuntos numeris" required>
                                 </div>
                                 <br><br>
                                 <input type='submit' name='track_package' class='btn btn-primary float-end' value='Sekti'>
@@ -190,10 +204,10 @@ if (!$dbc)
                             <!-- Package registration form -->
                             <form method="post">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
+                                    <input type="number" class="form-control" name="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
                                     <br>
                                     <label for="package_size">Siuntos dydis:</label>
-                                    <select class="form-control" id="siuntos_dydis">
+                                    <select class="form-control" name="siuntos_dydis">
                                         <option>XS</option>
                                         <option>S</option>
                                         <option>M</option>
