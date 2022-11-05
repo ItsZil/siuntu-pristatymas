@@ -41,7 +41,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "includes/header.php";
-        echo getHeader("Klausti");
+        echo getHeader("Užklausos");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -53,17 +53,17 @@ if (!$dbc)
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class='nav-link' href="index.php">Pagrindinis</a>
-                </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="index.php">Pagrindinis</a>
+                  </li>
 
-                <li class='nav-item'>
-                  <a class="nav-link active" aria-current="page" href="klausti.php">Klausti</a>
-                </li>
+                  <li class='nav-item'>
+                      <a class='nav-link' href='klausti.php'>Klausti</a>
+                  </li>
 
-                <li class='nav-item'>
-                    <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
-                </li>
+                  <li class='nav-item'>
+                      <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
+                  </li>
 
                   <?php
                   # MENU
@@ -84,7 +84,10 @@ if (!$dbc)
                   {
                       echo
                       "<li class='nav-item'>
-                    <a class='nav-link' href='uzklausos.php'>Užklausos ir skundai</a>
+                    <a class='nav-link active' aria-current='page' href='uzklausos.php'>Užklausos</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='skundai.php'>Skundai</a>
                     </li>
                     <li class='nav-item'>
                     <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
@@ -117,37 +120,49 @@ if (!$dbc)
         </div>
     </nav>
     <br>
-
     <div class="container">
         <div class="container">
             <div class="col-12">
-                <h1>Turite klausimų?</h1>
+                <h1>Užklausos</h1>
                 <hr>
             </div>
         </div>
-        <div class="container">
-            <div class="col-12">
-                <form method="post">
-                    <div class="mb-3">
-                        <label for="vardas" class="form-label">Jūsų vardas</label>
-                        <input type="text" class="form-control" id="vardas" name="vardas" maxlength="50" required>
-                        <br>
-                        <label for="email" class="form-label">El. paštas</label>
-                        <input type="email" class="form-control" id="email" name="email" maxlength="75" required>
-                        <br>
-                        <label for="phone" class="form-label">Telefono numeris</label>
-                        <input type="text" class="form-control" id="phone" name="phone" maxlength="12" required>
-                        <br>
-                        <label for="topic" class="form-label">Tema</label>
-                        <input type="text" class="form-control" id="topic" name="topic" maxlength="50" required>
-                        <br>
-                        <label for="klausimas" class="form-label">Įveskite savo klausimą žemiau:</label>
-                        <textarea class="form-control" id="klausimas" name="klausimas" rows="3" required></textarea>
-                    </div>
-                    <input type='submit' name='send_question' class='btn btn-primary float-end' value="Siųsti užklausą">
-                </form>
-            </div>
-        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Tema</th>
+                <th>Užklausa</th>
+                <th>Veiksmai</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Užklausa1</td>
+                <td>Užklausos tekstas</td>
+                <td>
+                    <button class="btn btn-primary me-1">Atsakyti</button>
+                    <button class="btn btn-primary ms-3">Ištrinti</button>
+                </td>
+            </tr
+            <tr>
+                <td>Užklausa2</td>
+                <td>Užklausos tekstas</td>
+                <td>
+                    <button class="btn btn-primary me-1">Atsakyti</button>
+                    <button class="btn btn-primary ms-3">Ištrinti</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Užklausa3</td>
+                <td>Užklausos tekstas</td>
+                <td>
+                    <button class="btn btn-primary me-1">Atsakyti</button>
+                    <button class="btn btn-primary ms-3">Ištrinti</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
     <?php

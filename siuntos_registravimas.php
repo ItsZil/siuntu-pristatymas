@@ -41,10 +41,9 @@ if (!$dbc)
 <head>
     <?php
         include_once "includes/header.php";
-        echo getHeader("Siuntos registracija");
+        echo getHeader("Siuntos registravimas");
     ?>
 </head>
-
 <script>
     $(()=> {
         $("#delivery_method").on("change", () => {
@@ -61,7 +60,6 @@ if (!$dbc)
         });
     });
 </script>
-
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container-fluid">
@@ -90,14 +88,30 @@ if (!$dbc)
                       echo
                       "<li class='nav-item'>
                           <a class='nav-link' href='kurjeris.php'>Kurjeris</a>
+                      </li>
+                      <li class='nav-item'>
+                          <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
+                      </li>
+                      <li class='nav-item'>
+                          <a class='nav-link' href='navigacija.php'>Navigacija</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
-                    echo
-                    "<li class='nav-item'>
-                    <a class='nav-link' href=''>[ADMIN] 1</a>
+                      echo
+                      "<li class='nav-item'>
+                    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='skundai.php'>Skundai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
                     </li>";
+
                   }
 
                   if (isset($_SESSION["username"]))
@@ -122,7 +136,6 @@ if (!$dbc)
         </div>
     </nav>
     <br>
-
     <div class="container">
         <div class="container">
             <div class="col-12">
@@ -194,7 +207,7 @@ if (!$dbc)
 
                         <br>
                         <!-- have the following 3 fields on the same line -->
-                            <label for="price" class="form-label">Siuntos kaina:</label>
+                        <label for="price" class="form-label">Siuntos kaina:</label>
                         <div class="input-group mb3">
                             <input type="text" class="form-control" id="price" name="price" readonly>
                             <input type='submit' name='calculate_price' class='btn btn-primary float-end' value="Skaičiuoti kainą">
@@ -205,7 +218,6 @@ if (!$dbc)
             </div>
         </div>
     </div>
-
     <?php
         include_once "includes/footer.html";
     ?>

@@ -41,7 +41,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "includes/header.php";
-        echo getHeader("Pagrindinis");
+        echo getHeader("Kurjeris");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -72,14 +72,30 @@ if (!$dbc)
                       echo
                       "<li class='nav-item'>
                           <a class='nav-link active' aria-current='page' href='kurjeris.php'>Kurjeris</a>
+                      </li>
+                      <li class='nav-item'>
+                          <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
+                      </li>
+                      <li class='nav-item'>
+                          <a class='nav-link' href='navigacija.php'>Navigacija</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
-                    echo
-                    "<li class='nav-item'>
-                    <a class='nav-link' href=''>[ADMIN] 1</a>
+                      echo
+                      "<li class='nav-item'>
+                    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='skundai.php'>Skundai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
                     </li>";
+
                   }
 
                   if (isset($_SESSION["username"]))

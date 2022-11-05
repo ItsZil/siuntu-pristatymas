@@ -54,7 +54,7 @@ if (!$dbc)
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                      <a class="nav-link" href="#">Pagrindinis</a>
+                      <a class="nav-link" href="index.php">Pagrindinis</a>
                   </li>
 
                   <li class='nav-item'>
@@ -71,15 +71,31 @@ if (!$dbc)
                   {
                       echo
                       "<li class='nav-item'>
-                          <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
+                          <a class='nav-link active' aria-current='page' href='kurjeris.php'>Kurjeris</a>
+                      </li>
+                      <li class='nav-item'>
+                          <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
+                      </li>
+                      <li class='nav-item'>
+                          <a class='nav-link' href='navigacija.php'>Navigacija</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
-                    echo
-                    "<li class='nav-item'>
-                    <a class='nav-link' href=''>[ADMIN] 1</a>
+                      echo
+                      "<li class='nav-item'>
+                    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='skundai.php'>Skundai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
                     </li>";
+
                   }
 
                   if (isset($_SESSION["username"]))
