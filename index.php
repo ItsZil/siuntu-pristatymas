@@ -190,7 +190,7 @@ if (!$dbc)
         <br>
         <!-- Terminal map -->
         <div class="card w-100">
-            <div class="card-header">Paštomatų žemėlpais</div>
+            <div class="card-header">Paštomatų žemėlapis</div>
             <div class="card-body">
                 <div class="container">
                     <iframe src="https://storage.googleapis.com/maps-solutions-pg19vlu2ft/locator-plus/aoi4/locator-plus.html"
