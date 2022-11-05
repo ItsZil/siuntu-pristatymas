@@ -58,15 +58,15 @@ if (!$dbc)
                   </li>
 
                   <li class='nav-item'>
-                      <a class='nav-link' href='terminals.php'>Paštomatai</a>
+                      <a class='nav-link' href='pastomatai.php'>Paštomatai</a>
                   </li>
 
                   <li class='nav-item'>
-                      <a class='nav-link' href='question.php'>Klauskite</a>
+                      <a class='nav-link' href='klausimai.php'>Klauskite</a>
                   </li>
 
                   <li class='nav-item'>
-                      <a class='nav-link' href='newparcel.php'>Siuntos registravimas</a>
+                      <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
                   </li>
 
                   <?php
@@ -75,7 +75,7 @@ if (!$dbc)
                   {
                       echo
                       "<li class='nav-item'>
-                          <a class='nav-link' href='newparcel.php'>Siuntos registravimas</a>
+                          <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
@@ -101,7 +101,7 @@ if (!$dbc)
                         echo
                         "</ul>
                         <form class='d-flex'>
-                            <a class='btn btn-outline-success' href='login.php'>Prisijungti</a>
+                            <a class='btn btn-outline-success' href='prisijungimas.php'>Prisijungti</a>
                         </form>";
                   }
         ?>

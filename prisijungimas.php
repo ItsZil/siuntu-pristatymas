@@ -34,7 +34,7 @@
     {
       $_SESSION["username"] = $username;
       $_SESSION["incorrect_login"] = "Neteisingas prisijungimo vardas arba slaptažodis";
-      header('Location: login.php');
+      header('Location: prisijungimas.php');
     }
     else
     {
@@ -53,7 +53,7 @@
       {
         $_SESSION["username"] = $username;
         $_SESSION["incorrect_login"] = "Neteisingas prisijungimo vardas arba slaptažodis";
-        header('Location: login.php');
+        header('Location: prisijungimas.php');
       }
     }
     mysqli_close($dbc);
@@ -122,7 +122,7 @@
 
         <!-- Registracijos mygtukas -->
         <div>
-          <p>Neturite paskyros? <a href="register.php">Registruotis</a></p>
+          <p>Neturite paskyros? <a href="registracija.php">Registruotis</a></p>
       </div>
     </form>
 </body>
