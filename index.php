@@ -140,34 +140,43 @@ if (!$dbc)
     <!-- Package tracking and 1 other -->
     <div class="container w-50">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-6 d-flex align-items-stretch">
                 <div class="card w-100">
+                    <div class="card-header">Siuntos sekimas</div>
                     <div class="card-body">
                         <div class="container-sm">
                             <!-- Package tracking form -->
                             <form action="sekimas.php" method="post">
                                 <div class="mb-3">
-                                    <label for="package_id" class="form-label">Įveskite siuntos numerį:</label>
-                                    <input type="text" class="form-control" id="packageID" name="packageID" placeholder="Siuntos numeris">
+                                    <label for="package_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
+                                    <input type="text" class="form-control" id="package_id" placeholder="Siuntos numeris" required>
                                 </div>
-                                <input type='submit' name='track' class='btn btn-primary' value='Sekti'>
+                                <input type='submit' name='track_package' class='btn btn-primary float-end' value='Sekti'>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-6 d-flex align-items-stretch">
                 <div class="card w-100">
+                    <div class="card-header">Siuntos registracija</div>
                     <div class="card-body">
                         <div class="container-sm">
-                            <!-- Package tracking form -->
+                            <!-- Package registration form -->
                             <form action="sekimas.php" method="post">
                                 <div class="mb-3">
-                                    <label for="package_id" class="form-label">Įveskite siuntos numerį:</label>
-                                    <input type="text" class="form-control" id="packageID" name="packageID" placeholder="Siuntos numeris">
+                                    <div class="input-group mb3">
+                                        <input type="number" class="form-control" id="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
+                                        <input type="number" class="form-control" id="package_length" min="10" placeholder="Ilgis (cm)" required>
+                                    </div>
+                                    <br>
+                                    <div class="input-group mb3">
+                                        <input type="number" class="form-control" id="package_width" min="10" placeholder="Plotis (cm)" required>
+                                        <input type="number" class="form-control" id="package_height" min="10" placeholder="Aukštis (cm)" required>
+                                    </div>
                                 </div>
-                                <input type='submit' name='track' class='btn btn-primary' value='Sekti'>
+                                <input type='submit' name='register_package' class='btn btn-primary float-end' value='Registruoti'>
                             </form>
                         </div>
                     </div>
