@@ -140,7 +140,7 @@ if (!$dbc)
 
     <br>
 
-    <!-- Package tracking and 1 other -->
+    <!-- Package tracking and initial registration forms -->
     <div class="container w-50">
         <div class="row">
             <div class="col-sm-6 d-flex align-items-stretch">
@@ -154,6 +154,7 @@ if (!$dbc)
                                     <label for="package_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
                                     <input type="text" class="form-control" id="package_id" placeholder="Siuntos numeris" required>
                                 </div>
+                                <br>
                                 <input type='submit' name='track_package' class='btn btn-primary float-end' value='Sekti'>
                             </form>
                         </div>
@@ -186,9 +187,21 @@ if (!$dbc)
                 </div>
             </div>
         </div>
+        <br>
+        <!-- Terminal map -->
+        <div class="card w-100">
+            <div class="card-header">Paštomatų žemėlpais</div>
+            <div class="card-body">
+                <div class="container">
+                    <iframe src="https://storage.googleapis.com/maps-solutions-pg19vlu2ft/locator-plus/aoi4/locator-plus.html"
+                            width="100%" height="450"
+                            style="border:0;"
+                            loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
     </div>
-
-
 
     <?php
         include_once "includes/footer.html";
