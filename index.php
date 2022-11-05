@@ -96,7 +96,6 @@ if (!$dbc)
                   {
                         echo
                         "</ul>
-                        <span class='navbar-text'>Esate neprisijungę</span>
                         <form class='d-flex'>
                             <a class='btn btn-outline-success' href='login.php'>Prisijungti</a>
                         </form>";
