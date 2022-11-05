@@ -20,7 +20,10 @@
     $name = $_POST['name'];
     $surname = $_POST['surname'];
     $phone = $_POST['phone'];
-  $email = $_POST['email'];
+    $email = $_POST['email'];
+    $access_key = $_POST['access_key'];
+
+    // TODO limit if access key isnt correct
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
@@ -62,7 +65,7 @@
           <input type="username" class="form-control" name="username" placeholder="username" maxlength="20" required>
           <label for="username">Slapyvardis</label>
         </div>
-        
+
         <!-- Slaptažodis -->
         <div class="form-floating mb-3">
           <input type="password" class="form-control" name="password" placeholder="Slaptažodis" required>
@@ -93,9 +96,15 @@
           <label for="email">El. paštas</label>
       </div>
 
-        <!-- Registracijos mygtukas -->
-        <input type="submit" name='ok' formv class="btn btn-primary btn-block mb-2" value="Registruotis">
+      <!-- Prieigos raktas -->
+      <div class="form-floating mb-3">
+          <input type="text" class="form-control" name="access_key" placeholder="Prieigos raktas" maxlength="25" required>
+          <label for="access_key">Prieigos raktas</label>
       </div>
+
+        <!-- Registracijos mygtukas -->
+      <input type="submit" name='ok' formv class="btn btn-primary btn-block mb-2" value="Registruotis">
+    </div>
     </form>
 
     <?php

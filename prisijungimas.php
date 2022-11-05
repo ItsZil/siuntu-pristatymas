@@ -124,6 +124,7 @@
         <div>
           <p>Neturite paskyros? <a href="registracija.php">Registruotis</a></p>
       </div>
+      </div>
     </form>
 
     <?php
