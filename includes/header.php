@@ -26,6 +26,9 @@
             <!-- Google Font: Source Sans Pro -->
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
             
+            <!-- Main stylesheet -->
+            <link rel="stylesheet" href="/assets/css/style.css">
+            
             <!-- Font Awesome  --> 		
             <script src="https://kit.fontawesome.com/d3e1e2eb6a.js" crossorigin="anonymous"></script>
         HTML;

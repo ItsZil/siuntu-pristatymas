@@ -41,7 +41,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "includes/header.php";
-        echo getHeader("Pagrindinis");
+        echo getHeader("Klausti");
     ?>
 </head>
 <body>
@@ -108,6 +108,38 @@ if (!$dbc)
         </div>
     </nav>
     <br>
+
+    <div class="container">
+        <div class="container">
+            <div class="col-12">
+                <h1>Turite klausimų?</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-12">
+                <form action="klausimai.php" method="post">
+                    <div class="mb-3">
+                        <label for="vardas" class="form-label">Jūsų vardas</label>
+                        <input type="text" class="form-control" id="vardas" name="vardas" maxlength="50" required>
+                        <br>
+                        <label for="email" class="form-label">El. paštas</label>
+                        <input type="email" class="form-control" id="email" name="email" maxlength="75" required>
+                        <br>
+                        <label for="phone" class="form-label">Telefono numeris</label>
+                        <input type="text" class="form-control" id="phone" name="phone" maxlength="12" required>
+                        <br>
+                        <label for="topic" class="form-label">Tema</label>
+                        <input type="text" class="form-control" id="topic" name="topic" maxlength="50" required>
+                        <br>
+                        <label for="klausimas" class="form-label">Įveskite savo klausimą žemiau:</label>
+                        <textarea class="form-control" id="klausimas" name="klausimas" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end">Siųsti užklausą</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <?php
         include_once "includes/footer.html";
