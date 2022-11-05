@@ -58,11 +58,7 @@ if (!$dbc)
                   </li>
 
                   <li class='nav-item'>
-                      <a class='nav-link' href='pastomatai.php'>Paštomatai</a>
-                  </li>
-
-                  <li class='nav-item'>
-                      <a class='nav-link' href='klausimai.php'>Klauskite</a>
+                      <a class='nav-link' href='klausti.php'>Klausti</a>
                   </li>
 
                   <li class='nav-item'>
