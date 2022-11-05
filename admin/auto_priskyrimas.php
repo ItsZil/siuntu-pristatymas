@@ -15,7 +15,7 @@ if (isset($_POST["logout"]))
     session_unset();
     session_destroy();
     $_SESSION = array();
-    header('Location: index.php');
+    header('Location: ../index.php');
 }
 
 if (!isset($_SESSION["username"]))
@@ -40,8 +40,8 @@ if (!$dbc)
 <html lang="en">
 <head>
     <?php
-        include_once "includes/header.php";
-        echo getHeader("Kurjeriai");
+        include_once "../includes/header.php";
+        echo getHeader("Auto priskyrimas");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -54,15 +54,17 @@ if (!$dbc)
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                      <a class="nav-link" href="index.php">Pagrindinis</a>
+                      <a class="nav-link" href="../index.php">Pagrindinis</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="../sekimas.php">Sekimas</a>
+                  </li>
+                  <li class='nav-item'>
+                      <a class='nav-link' href='../klausti.php'>Klausti</a>
                   </li>
 
                   <li class='nav-item'>
-                      <a class='nav-link' href='klausti.php'>Klausti</a>
-                  </li>
-
-                  <li class='nav-item'>
-                      <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
+                      <a class='nav-link' href='../siuntos_registravimas.php'>Siuntos registravimas</a>
                   </li>
 
                   <?php
@@ -71,14 +73,12 @@ if (!$dbc)
                   {
                       echo
                       "<li class='nav-item'>
-                          <a class='nav-link' href='kurjeris.php'>Kurjeris</a>
+                          <a class='nav-link active' aria-current='page' href='kurjeris/kurjeris.php'>Kurjeris</a>
                       </li>
                       <li class='nav-item'>
-                          <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
+                          <a class='nav-link' href='kurjeris/skundas.php'>Skundo registravimas</a>
                       </li>
-                      <li class='nav-item'>
-                          <a class='nav-link' href='navigacija.php'>Navigacija</a>
-                      </li>";
+                      ";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
@@ -90,10 +90,16 @@ if (!$dbc)
                     <a class='nav-link' href='skundai.php'>Skundai</a>
                     </li>
                     <li class='nav-item'>
-                    <a class='nav-link active' aria-current='page' href='kurjeriai.php'>Kurjeriai</a>
+                    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
                     </li>
                     <li class='nav-item'>
                     <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link active' aria-current='page'  href='auto_priskyrimas.php'>Auto priskyrimas</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
                     </li>";
 
                   }
@@ -120,11 +126,10 @@ if (!$dbc)
         </div>
     </nav>
     <br>
-
     <div class="container">
         <div class="container">
             <div class="col-12">
-                <h1>Kurjerių sąrašas</h1>
+                <h1>Automobilio priskyrimas kurjeriui</h1>
                 <hr>
             </div>
         </div>
@@ -132,41 +137,61 @@ if (!$dbc)
         <table class='table table-striped'>
             <thead>
             <tr>
-                <th>Vardas</th>
-                <th>Pavardė</th>
-                <th>Telefono numeris</th>
+                <th>Modelis</th>
+                <th>Būsena</th>
+                <th>Bagažo dydis</th>
+                <th>Kurjeris</th>
                 <th>Veiksmai</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>Kurjeris1</td>
-                <td>Kurjeris1</td>
-                <td>+37068724675</td>
+                <td>Mercedes</td>
+                <td>Laisvas</td>
+                <td>L4 H3</td>
+                <td>
+                    <select class="form-select" id="courier" name="Kurjeris" required>
+                        <option>Kurjeris1</option>
+                        <option>Kurjeris2</option>
+                        <option>Kurjeris3</option>
+                    </select>
+                </td>
                 <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
             </tr
             <tr>
-                <td>Kurjeris2</td>
-                <td>Kurjeris2</td>
-                <td>+37068724675</td>
+                <td>Mercedes</td>
+                <td>Laisvas</td>
+                <td>L2 H2</td>
+                <td>
+                    <select class="form-select" id="courier" name="Kurjeris" required>
+                        <option>Kurjeris1</option>
+                        <option>Kurjeris2</option>
+                        <option>Kurjeris3</option>
+                    </select>
+                </td>
                 <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
 
             </tr>
             <tr>
-                <td>Kurjeris3</td>
-                <td>Kurjeris3</td>
-                <td>+37068724675</td>
+                <td>Mercedes</td>
+                <td>Laisvas</td>
+                <td>L1 H2</td>
+                <td>
+                    <select class="form-select" id="courier" name="Kurjeris" required>
+                        <option>Kurjeris1</option>
+                        <option>Kurjeris2</option>
+                        <option>Kurjeris3</option>
+                    </select>
+                </td>
                 <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
 
             </tr>
             </tbody>
         </table>
+        <input id='button' type='submit' name='submit_changes' class='btn btn-primary float-end' value="Išsaugoti"">
     </div>
-
-
-
     <?php
-        include_once "includes/footer.html";
+        include_once "../includes/footer.html";
     ?>
 </body>
 </html>

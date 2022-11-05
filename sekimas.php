@@ -87,29 +87,32 @@ if (!$dbc)
                 {
                     echo
                     "<li class='nav-item'>
-                          <a class='nav-link' href='kurjeris.php'>Kurjeris</a>
+                          <a class='nav-link' href='kurjeris/kurjeris.php'>Kurjeris</a>
                       </li>
                       <li class='nav-item'>
-                          <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
-                      </li>
-                      <li class='nav-item'>
-                          <a class='nav-link' href='navigacija.php'>Navigacija</a>
+                          <a class='nav-link' href='kurjeris/skundas.php'>Skundo registravimas</a>
                       </li>";
                 }
                 if ($_SESSION["access_level"] == 3) # Administratorius
                 {
                     echo
                     "<li class='nav-item'>
-                    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
+                    <a class='nav-link' href='admin/uzklausos.php'>Užklausos</a>
                     </li>
                     <li class='nav-item'>
-                    <a class='nav-link' href='skundai.php'>Skundai</a>
+                    <a class='nav-link' href='admin/skundai.php'>Skundai</a>
                     </li>
                     <li class='nav-item'>
-                    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
+                    <a class='nav-link' href='admin/kurjeriai.php'>Kurjeriai</a>
                     </li>
                     <li class='nav-item'>
-                    <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
+                    <a class='nav-link' href='admin/sandeliai.php'>Sandėliai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='admin/auto_priskyrimas.php'>Auto priskyrimas</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='admin/siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
                     </li>";
 
                 }

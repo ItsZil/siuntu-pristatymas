@@ -15,7 +15,7 @@ if (isset($_POST["logout"]))
     session_unset();
     session_destroy();
     $_SESSION = array();
-    header('Location: index.php');
+    header('Location: ../index.php');
 }
 
 if (!isset($_SESSION["username"]))
@@ -40,8 +40,8 @@ if (!$dbc)
 <html lang="en">
 <head>
     <?php
-        include_once "includes/header.php";
-        echo getHeader("Navigacija");
+        include_once "../includes/header.php";
+        echo getHeader("Užklausos");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -54,15 +54,17 @@ if (!$dbc)
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                      <a class="nav-link" href="index.php">Pagrindinis</a>
+                      <a class="nav-link" href="../index.php">Pagrindinis</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="../sekimas.php">Sekimas</a>
+                  </li>
+                  <li class='nav-item'>
+                      <a class='nav-link' href='../klausti.php'>Klausti</a>
                   </li>
 
                   <li class='nav-item'>
-                      <a class='nav-link' href='klausti.php'>Klausti</a>
-                  </li>
-
-                  <li class='nav-item'>
-                      <a class='nav-link' href='siuntos_registravimas.php'>Siuntos registravimas</a>
+                      <a class='nav-link' href='../siuntos_registravimas.php'>Siuntos registravimas</a>
                   </li>
 
                   <?php
@@ -71,20 +73,17 @@ if (!$dbc)
                   {
                       echo
                       "<li class='nav-item'>
-                          <a class='nav-link' href='kurjeris.php'>Kurjeris</a>
+                          <a class='nav-link' href='../kurjeris/kurjeris.php'>Kurjeris</a>
                       </li>
                       <li class='nav-item'>
-                          <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
-                      </li>
-                      <li class='nav-item'>
-                          <a class='nav-link active' aria-current='page' href='navigacija.php'>Navigacija</a>
+                          <a class='nav-link' href='../kurjeris/skundas.php'>Skundo registravimas</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
                       echo
                       "<li class='nav-item'>
-                    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
+                    <a class='nav-link active' aria-current='page'  href='uzklausos.php'>Užklausos</a>
                     </li>
                     <li class='nav-item'>
                     <a class='nav-link' href='skundai.php'>Skundai</a>
@@ -94,6 +93,12 @@ if (!$dbc)
                     </li>
                     <li class='nav-item'>
                     <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='auto_priskyrimas.php'>Auto priskyrimas</a>
+                    </li>
+                    <li class='nav-item'>
+                    <a class='nav-link' href='siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
                     </li>";
 
                   }
@@ -113,16 +118,60 @@ if (!$dbc)
                         echo
                         "</ul>
                         <form class='d-flex'>
-                            <a class='btn btn-outline-success' href='prisijungimas.php'>Prisijungti</a>
+                            <a class='btn btn-outline-success' href='../prisijungimas.php'>Prisijungti</a>
                         </form>";
                   }
         ?>
         </div>
     </nav>
     <br>
+    <div class="container">
+        <div class="container">
+            <div class="col-12">
+                <h1>Užklausos</h1>
+                <hr>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Tema</th>
+                <th>Užklausa</th>
+                <th>Veiksmai</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Užklausa1</td>
+                <td>Užklausos tekstas</td>
+                <td>
+                    <button class="btn btn-primary me-1">Atsakyti</button>
+                    <button class="btn btn-primary ms-3">Ištrinti</button>
+                </td>
+            </tr
+            <tr>
+                <td>Užklausa2</td>
+                <td>Užklausos tekstas</td>
+                <td>
+                    <button class="btn btn-primary me-1">Atsakyti</button>
+                    <button class="btn btn-primary ms-3">Ištrinti</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Užklausa3</td>
+                <td>Užklausos tekstas</td>
+                <td>
+                    <button class="btn btn-primary me-1">Atsakyti</button>
+                    <button class="btn btn-primary ms-3">Ištrinti</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <?php
-        include_once "includes/footer.html";
+        include_once "../includes/footer.html";
     ?>
 </body>
 </html>
