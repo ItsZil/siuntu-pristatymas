@@ -44,7 +44,7 @@ if (!$dbc)
         echo getHeader("Klausti");
     ?>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container-fluid">
             <a class="navbar-brand" href="#"></a>

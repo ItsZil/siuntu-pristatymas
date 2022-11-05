@@ -69,7 +69,7 @@
         echo getHeader("Prisijungimas");
       ?>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <div class="text-center">
       <h2>Siuntų pristatymo tarnyba</h2>
       <p><i>Prašome prisijungti prie sistemos</i></p>
@@ -125,5 +125,9 @@
           <p>Neturite paskyros? <a href="registracija.php">Registruotis</a></p>
       </div>
     </form>
+
+    <?php
+    include_once "includes/footer.html";
+    ?>
 </body>
 </html>

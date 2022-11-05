@@ -49,7 +49,7 @@
         echo getHeader("Registracija");
       ?>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <div class="text-center">
       <h2>Siuntų pristatymo tarnyba</h2>
       <p><i>Registracija</i></p>
@@ -97,5 +97,9 @@
         <input type="submit" name='ok' formv class="btn btn-primary btn-block mb-2" value="Registruotis">
       </div>
     </form>
+
+    <?php
+    include_once "includes/footer.html";
+    ?>
   </body>
 </html>
