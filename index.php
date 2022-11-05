@@ -107,5 +107,10 @@ if (!$dbc)
     <br>
 
     <h1>Pagrindinis</h1>
+
+
+    <?php
+        include_once "includes/footer.html";
+    ?>
 </body>
 </html>
