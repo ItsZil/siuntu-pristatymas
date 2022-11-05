@@ -114,7 +114,7 @@ if (!$dbc)
         </div>
         <div class="container">
             <div class="col-12">
-                <form action="klausti.php" method="post">
+                <form method="post">
                     <div class="mb-3">
                         <label for="vardas" class="form-label">Jūsų vardas</label>
                         <input type="text" class="form-control" id="vardas" name="vardas" maxlength="50" required>
@@ -131,7 +131,7 @@ if (!$dbc)
                         <label for="klausimas" class="form-label">Įveskite savo klausimą žemiau:</label>
                         <textarea class="form-control" id="klausimas" name="klausimas" rows="3" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary float-end">Siųsti užklausą</button>
+                    <input type='submit' name='send_question' class='btn btn-primary float-end' value="Siųsti užklausą">
                 </form>
             </div>
         </div>

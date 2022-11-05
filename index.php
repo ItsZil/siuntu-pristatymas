@@ -18,6 +18,15 @@ if (isset($_POST["logout"]))
     header('Location: index.php');
 }
 
+# Siuntos registravimas
+if (isset($_POST["register_package"]))
+{
+    $package_weight = $_POST["package_weight"];
+    $package_size = $_POST["package_size"];
+
+    header('Location: siuntos_registravimas.php');
+}
+
 if (!isset($_SESSION["username"]))
 {
     $_SESSION["logged_in"] = 0;
@@ -146,12 +155,12 @@ if (!$dbc)
                     <div class="card-body">
                         <div class="container-sm">
                             <!-- Package tracking form -->
-                            <form action="sekimas.php" method="post">
+                            <form method="post">
                                 <div class="mb-3">
                                     <label for="package_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
                                     <input type="text" class="form-control" id="package_id" placeholder="Siuntos numeris" required>
                                 </div>
-                                <br>
+                                <br><br>
                                 <input type='submit' name='track_package' class='btn btn-primary float-end' value='Sekti'>
                             </form>
                         </div>
@@ -165,18 +174,20 @@ if (!$dbc)
                     <div class="card-body">
                         <div class="container-sm">
                             <!-- Package registration form -->
-                            <form action="sekimas.php" method="post">
-                                <div class="mb-3">
-                                    <div class="input-group mb3">
-                                        <input type="number" class="form-control" id="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
-                                        <input type="number" class="form-control" id="package_length" min="10" placeholder="Ilgis (cm)" required>
-                                    </div>
+                            <form method="post">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
                                     <br>
-                                    <div class="input-group mb3">
-                                        <input type="number" class="form-control" id="package_width" min="10" placeholder="Plotis (cm)" required>
-                                        <input type="number" class="form-control" id="package_height" min="10" placeholder="Aukštis (cm)" required>
-                                    </div>
+                                    <label for="package_size">Siuntos dydis:</label>
+                                    <select class="form-control" id="siuntos_dydis">
+                                        <option>XS</option>
+                                        <option>S</option>
+                                        <option>M</option>
+                                        <option>L</option>
+                                        <option>XL</option>
+                                    </select>
                                 </div>
+                                <br>
                                 <input type='submit' name='register_package' class='btn btn-primary float-end' value='Registruoti'>
                             </form>
                         </div>

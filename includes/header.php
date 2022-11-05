@@ -31,6 +31,8 @@
             
             <!-- Font Awesome  --> 		
             <script src="https://kit.fontawesome.com/d3e1e2eb6a.js" crossorigin="anonymous"></script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         HTML;
 
 		// For every addon in the addons array, get all the links from $CSS_ADDONS and append to header.
