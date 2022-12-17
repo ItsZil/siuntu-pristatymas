@@ -65,7 +65,7 @@ if (isset($_POST["calculate_price"]))
 
     $package_price += $package_price * $package_weight; // Weight
 
-    // Calculate distance
+    // Distance
     $api_key = getenv('GOOGLE_MAPS_API_KEY');
     $from = "";
     $to = "";
@@ -334,7 +334,7 @@ if (isset($_POST["calculate_price"]))
                         <br>
                         <label for="price" class="form-label">Siuntos kaina:</label>
                         <div class="input-group mb3">
-                            <input type="text" class="form-control" id="price" name="price" readonly>
+                            <input type="text" class="form-control" id="package_price" name="package_price" value="<?php echo $_SESSION["package_price"] ?>" readonly>
                             <input type='submit' name='calculate_price' class='btn btn-primary float-end' value="Skaičiuoti kainą">
                         </div>
                     </div>
