@@ -41,20 +41,78 @@ if (isset($_POST["calculate_price"]))
     $package_size = $_POST["package_size"];
     $package_price = 0;
 
-    if ($package_size == "small")
+    // Size
+    if ($package_size == "XS")
     {
-        $package_price = 1.5;
+        $package_price += 0.99;
     }
-    else if ($package_size == "medium")
+    else if ($package_size == "S")
     {
-        $package_price = 2.5;
+        $package_price += 1.99;
     }
-    else if ($package_size == "large")
+    else if ($package_size == "M")
     {
-        $package_price = 3.5;
+        $package_price += 3.99;
+    }
+    else if ($package_size == "L")
+    {
+        $package_price += 4.99;
+    }
+    else
+    {
+        $package_price += 5.99;
     }
 
-    $package_price = $package_price * $package_weight;
+    $package_price += $package_price * $package_weight; // Weight
+
+    // Calculate distance
+    $api_key = getenv('GOOGLE_MAPS_API_KEY');
+    $from = "";
+    $to = "";
+
+    if (isset($_POST["pick_up_point"]))
+    {
+        // Delivery to a post machine
+        $from = $_POST["pick_up_point"];
+        $to = $_POST["delivery_point"];
+    }
+    else
+    {
+        // Delivery to address
+        $sender_city = $_POST["sender_city"];
+        $sender_post_code = $_POST["sender_post_code"];
+
+        $recipient_city = $_POST["recipient_city"];
+        $recipient_post_code = $_POST["recipient_post_code"];
+
+        $from = $sender_city . " " . $sender_post_code;
+        $to = $recipient_city . " " . $recipient_post_code;
+    }
+
+    $from = str_replace(" ", "+", $from);
+    $to = str_replace(" ", "+", $to);
+
+    $url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=$from&destinations=$to&key=$api_key";
+    $json = file_get_contents($url);
+    $data = json_decode($json, TRUE);
+    $distance = $data['rows'][0]['elements'][0]['distance']['value'] / 1000; // Distance in km
+
+    if ($distance < 20)
+    {
+        $package_price += 1;
+    }
+    else if ($distance < 100)
+    {
+        $package_price += 2;
+    }
+    else if ($distance < 500)
+    {
+        $package_price += 3;
+    }
+    else
+    {
+        $package_price += 9;
+    }
 
     $_SESSION["package_price"] = $package_price;
     $_SESSION["package_weight"] = $package_weight;
@@ -80,11 +138,29 @@ if (isset($_POST["calculate_price"]))
             {
                 $("#address_method").attr("hidden", true);
                 $("#pick_up_method").attr("hidden", false);
+
+                $("#sender_address").attr("required", false);
+                $("#sender_city").attr("required", false);
+                $("#sender_post_code").attr("required", false);
+
+                $("#recipient_address").attr("required", false);
+                $("#recipient_city").attr("required", false);
+                $("#recipient_post_code").attr("required", false);
+                $("#recipient_phone").attr("required", false);
             }
             else
             {
                 $("#address_method").attr("hidden", false);
                 $("#pick_up_method").attr("hidden", true);
+
+                $("#sender_address").attr("required", true);
+                $("#sender_city").attr("required", true);
+                $("#sender_post_code").attr("required", true);
+
+                $("#recipient_address").attr("required", true);
+                $("#recipient_city").attr("required", true);
+                $("#recipient_post_code").attr("required", true);
+                $("#recipient_phone").attr("required", true);
             }
         });
     });
@@ -185,30 +261,33 @@ if (isset($_POST["calculate_price"]))
 
                         <div id="address_method" hidden>
                             <label for="sender_address" class="form-label">Siuntėjo adresas</label>
-                            <input type="text" class="form-control" id="sender_address" name="sender_address" maxlength="100" required>
+                            <input type="text" class="form-control" id="sender_address" name="sender_address" maxlength="100">
                             <br>
                             <label for="sender_city" class="form-label">Siuntėjo miestas</label>
-                            <input type="text" class="form-control" id="sender_city" name="sender_city" maxlength="50" required>
+                            <input type="text" class="form-control" id="sender_city" name="sender_city" maxlength="50">
                             <br>
                             <label for="sender_post_code" class="form-label">Siuntėjo pašto kodas</label>
-                            <input type="text" class="form-control" id="sender_post_code" name="sender_post_code" maxlength="10" required>
+                            <input type="text" class="form-control" id="sender_post_code" name="sender_post_code" maxlength="10">
                             <br>
+
                             <br>
-                            <label for="address" class="form-label">Gavėjo adresas</label>
-                            <input type="text" class="form-control" id="recipient_address" name="recipient_address" maxlength="100" required>
+
+                            <label for="recipient_address" class="form-label">Gavėjo adresas</label>
+                            <input type="text" class="form-control" id="recipient_address" name="recipient_address" maxlength="100">
                             <br>
-                            <label for="city" class="form-label">Gavėjo miestas</label>
-                            <input type="text" class="form-control" id="recipient_city" name="recipient_city" maxlength="50" required>
+                            <label for="recipient_city" class="form-label">Gavėjo miestas</label>
+                            <input type="text" class="form-control" id="recipient_city" name="recipient_city" maxlength="50">
                             <br>
-                            <label for="zip" class="form-label">Gavėjo pašto kodas</label>
-                            <input type="text" class="form-control" id="recipient_post_code" name="recipient_post_code" maxlength="10" required>
-                            <label for="phone" class="form-label">Gavėjo telefono numeris</label>
-                            <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" maxlength="12" required>
+                            <label for="recipient_post_code" class="form-label">Gavėjo pašto kodas</label>
+                            <input type="text" class="form-control" id="recipient_post_code" name="recipient_post_code" maxlength="10">
+                            <br>
+                            <label for="recipient_phone" class="form-label">Gavėjo telefono numeris</label>
+                            <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" maxlength="12">
                             <br>
                         </div>
 
                         <div id="pick_up_method">
-                            <label for="pick_up_point" class="form-label>">Siuntos paiemimo paštomatas</label>
+                            <label for="pick_up_point" class="form-label>">Siuntos paėmimo paštomatas</label>
                             <select class="form-select" id="pick_up_point" name="pick_up_point" required>
                                 <?php
                                     $sql = "SELECT * FROM post_machines";
@@ -218,7 +297,8 @@ if (isset($_POST["calculate_price"]))
                                         $id = $row["id"];
                                         $name = $row["name"];
                                         $city = $row["city"];
-                                        echo "<option value='$id'>$name, $city</option>";
+                                        $address = $row["address"];
+                                        echo "<option value='$address'>$name, $city</option>";
                                     }
                                 ?>
                             </select>
@@ -232,7 +312,8 @@ if (isset($_POST["calculate_price"]))
                                         $id = $row["id"];
                                         $name = $row["name"];
                                         $city = $row["city"];
-                                        echo "<option value='$id'>$name, $city</option>";
+                                        $address = $row["address"];
+                                        echo "<option value='$address'>$name, $city</option>";
                                     }
                                 ?>
                             </select>
@@ -243,7 +324,7 @@ if (isset($_POST["calculate_price"]))
                         <input type="number" class="form-control" name="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
                         <br>
                         <label for="package_size">Siuntos dydis:</label>
-                        <select class="form-control" name="siuntos_dydis">
+                        <select class="form-control" name="package_size">
                             <option>XS</option>
                             <option>S</option>
                             <option>M</option>
