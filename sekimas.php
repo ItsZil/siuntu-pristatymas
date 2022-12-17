@@ -87,11 +87,8 @@ if (!$dbc)
                 {
                     echo
                     "<li class='nav-item'>
-                          <a class='nav-link' href='kurjeris/kurjeris.php'>Kurjeris</a>
-                      </li>
-                      <li class='nav-item'>
-                          <a class='nav-link' href='kurjeris/skundas.php'>Skundo registravimas</a>
-                      </li>";
+                        <a class='nav-link' href='kurjeris/kurjeris.php'>Kurjeris</a>
+                    </li>";
                 }
                 if ($_SESSION["access_level"] == 3) # Administratorius
                 {

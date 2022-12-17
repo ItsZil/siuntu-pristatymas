@@ -73,13 +73,10 @@ if (!$dbc)
                   # MENU
                   if ($_SESSION["access_level"] == 2) # Kurjeris
                   {
-                      echo
-                      "<li class='nav-item'>
-                          <a class='nav-link' href='kurjeris/kurjeris.php'>Kurjeris</a>
-                      </li>
-                      <li class='nav-item'>
-                          <a class='nav-link' href='kurjeris/skundas.php'>Skundo registravimas</a>
-                      </li>";
+                    echo
+                    "<li class='nav-item'>
+                        <a class='nav-link' href='kurjeris/kurjeris.php'>Kurjeris</a>
+                    </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
