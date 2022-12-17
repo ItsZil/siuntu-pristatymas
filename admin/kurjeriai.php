@@ -81,24 +81,8 @@ if (!$dbc)
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
-                      echo
-                      "<li class='nav-item'>
-                    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='skundai.php'>Skundai</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link active' aria-current='page'  href='kurjeriai.php'>Kurjeriai</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='sandeliai.php'>Sandėliai</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='auto_priskyrimas.php'>Auto priskyrimas</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
+                    echo "<li class='nav-item'>
+                    <a class='nav-link active' href='administratorius.php'>Administratorius</a>
                     </li>";
 
                   }
@@ -133,6 +117,12 @@ if (!$dbc)
                 <hr>
             </div>
         </div>
+
+        <div class="container">
+                <form>
+                    <a class='btn btn-primary me-1' href='kurjerio_pridejimas.php'>Pridėti kurjerį</a>
+                </form>
+            </div>
 
         <table class='table table-striped'>
             <thead>

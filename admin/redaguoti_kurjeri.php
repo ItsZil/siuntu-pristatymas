@@ -81,9 +81,10 @@ if (!$dbc)
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
                   {
-                    echo "<li class='nav-item'>
-                    <a class='nav-link active' href='administratorius.php'>Administratorius</a>
-                    </li>";
+                      echo
+                      echo "<li class='nav-item'>
+                      <a class='nav-link active' href='administratorius.php'>Administratorius</a>
+                      </li>";
 
                   }
 
@@ -110,63 +111,7 @@ if (!$dbc)
     </nav>
     <br>
 
-    <div class="container">
-        <div class="container">
-            <div class="col-12">
-                <h1>Sandėlių sąrašas</h1>
-                <hr>
-            </div>
-        </div>
-
-        <div class="container">
-                <form>
-                    <a class='btn btn-primary me-1' href='sandelio_pridejimas.php'>Pridėti sandėlį</a>
-                </form>
-            </div>
-
-        <table class='table table-striped'>
-            <thead>
-            <tr>
-                <th>Pavadinimas</th>
-                <th>Adresas</th>
-                <th>Telefono numeris</th>
-                <th>El. paštas</th>
-                <th>Plotas kv. m</th>
-                <th>Lentynų skaičius</th>
-                <th>Veiksmai</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Sandėlis1</td>
-                <td>Liepos g. 15, Kaunas, 50278</td>
-                <td>+37069728643</td>
-                <td>sandelis1@gmail.com</td>
-                <td>50</td>
-                <td>150</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr
-            <tr>
-                <td>Sandėlis2</td>
-                <td>Aušros g. 17, Kaunas, 50278</td>
-                <td>+37062157846</td>
-                <td>sandelis2@gmail.com</td>
-                <td>35</td>
-                <td>120</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr>
-            <tr>
-                <td>Sandėlis3</td>
-                <td>Pramonės prospektas 198, Kaunas, 50278</td>
-                <td>+37068432617</td>
-                <td>sandelis3@gmail.com</td>
-                <td>25</td>
-                <td>100</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    
     <?php
         include_once "../includes/footer.html";
     ?>

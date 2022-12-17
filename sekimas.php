@@ -95,24 +95,8 @@ if (!$dbc)
                 }
                 if ($_SESSION["access_level"] == 3) # Administratorius
                 {
-                    echo
-                    "<li class='nav-item'>
-                    <a class='nav-link' href='admin/uzklausos.php'>Užklausos</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='admin/skundai.php'>Skundai</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='admin/kurjeriai.php'>Kurjeriai</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='admin/sandeliai.php'>Sandėliai</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='admin/auto_priskyrimas.php'>Auto priskyrimas</a>
-                    </li>
-                    <li class='nav-item'>
-                    <a class='nav-link' href='admin/siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
+                    echo "<li class='nav-item'>
+                    <a class='nav-link active' href='admin/administratorius.php'>Administratorius</a>
                     </li>";
 
                 }

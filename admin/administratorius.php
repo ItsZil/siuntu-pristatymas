@@ -41,7 +41,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "../includes/header.php";
-        echo getHeader("Siuntų priskyrimas");
+        echo getHeader("Sandėliai");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -57,7 +57,7 @@ if (!$dbc)
                       <a class="nav-link" href="../index.php">Pagrindinis</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link"  href="../sekimas.php">Sekimas</a>
+                      <a class="nav-link" aria-current="page" href="../sekimas.php">Sekimas</a>
                   </li>
                   <li class='nav-item'>
                       <a class='nav-link' href='../klausti.php'>Klausti</a>
@@ -73,10 +73,10 @@ if (!$dbc)
                   {
                       echo
                       "<li class='nav-item'>
-                          <a class='nav-link'  href='kurjeris/kurjeris.php'>Kurjeris</a>
+                          <a class='nav-link' href='../kurjeris/kurjeris.php'>Kurjeris</a>
                       </li>
                       <li class='nav-item'>
-                          <a class='nav-link' href='kurjeris/skundas.php'>Skundo registravimas</a>
+                          <a class='nav-link' href='../kurjeris/skundas.php'>Skundo registravimas</a>
                       </li>";
                   }
                   if ($_SESSION["access_level"] == 3) # Administratorius
@@ -84,6 +84,7 @@ if (!$dbc)
                     echo "<li class='nav-item'>
                     <a class='nav-link active' href='administratorius.php'>Administratorius</a>
                     </li>";
+                    
 
                   }
 
@@ -102,80 +103,23 @@ if (!$dbc)
                         echo
                         "</ul>
                         <form class='d-flex'>
-                            <a class='btn btn-outline-success' href='prisijungimas.php'>Prisijungti</a>
+                            <a class='btn btn-outline-success' href='../prisijungimas.php'>Prisijungti</a>
                         </form>";
                   }
         ?>
         </div>
     </nav>
     <br>
-        <form method="post">
-            <div class="container">
-                <div class="container">
-                    <div class="col-12">
-                        <h1>Siuntų sąrašas</h1>
-                        <hr>
-                    </div>
-                </div>
+    <div class="container">
+    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
+    <a class='nav-link' href='skundai.php'>Skundai</a>
+    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
+    <a class='nav-link' href='auto_priskyrimas.php'>Auto priskyrimas</a>
+    <a class='nav-link' href='siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
+    <a class='nav-link' aria-current='page'  href='sandeliai.php'>Sandėliai</a>
+        </div>
 
-                <table class='table table-striped'>
-                    <thead>
-                    <tr>
-                        <th>Kurjeris</th>
-                        <th>Siuntos kodas</th>
-                        <th>Išsiuntimo data</th>
-                        <th>Pristatymo data</th>
-                        <th>Pristatymo adresas</th>
-                        <th>Statusas</th>
-                        <th>Dydis</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><select class="form-select" id="courier" name="Kurjeris" required>
-                                <option>Kurjeris1</option>
-                                <option>Kurjeris2</option>
-                                <option>Kurjeris3</option>
-                            </select>
-                        </td>
-                        <td>31657</td>
-                        <td>2022-11-05</td>
-                        <td>2022-11-08</td>
-                        <td>Vilniaus g. 17, Utena, 34678</td>
-                        <td>Nepristatyta</td>
-                        <td>M</td>
-                    </tr>
-                    <tr>
-                        <td><select class="form-select" id="courier" name="Kurjeris" required>
-                                <option>Kurjeris1</option>
-                                <option>Kurjeris2</option>
-                                <option>Kurjeris3</option>
-                            </select>
-                        </td>
-                        <td>31658</td>
-                        <td>2022-11-04</td>
-                        <td>2022-11-06</td>
-                        <td>Šilo g. 25, Anykščiai, 67541</td>
-                        <td>Nepristatyta</td>
-                        <td>L</td></tr>
-                    <tr>
-                        <td><select class="form-select" id="courier" name="Kurjeris" required>
-                                <option>Kurjeris1</option>
-                                <option>Kurjeris2</option>
-                                <option>Kurjeris3</option>
-                            </select>
-                        </td>
-                        <td>31659</td>
-                        <td>2022-11-03</td>
-                        <td>2022-11-10</td>
-                        <td>Mokyklos g. 5, Molėtai, 49735</td>
-                        <td>Užsakyta</td>
-                        <td>M</td></tr>
-                    </tbody>
-                </table>
-                <input id='button' type='submit' name='submit_changes' class='btn btn-primary float-end' value="Išsaugoti"">
-            </div>
-        </form>
+    
     <?php
         include_once "../includes/footer.html";
     ?>
