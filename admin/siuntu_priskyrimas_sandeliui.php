@@ -6,6 +6,21 @@ $password = "";
 // prisijungimas prie DB
 $dbc=mysqli_connect($server,$user,$password,$db);
 
+$sql="SELECT * FROM packages";
+$result=mysqli_query($dbc,$sql);
+
+/* Count table rows */
+$count=mysqli_num_rows($result);
+
+$warehouses = array();
+$query = "SELECT * FROM warehouses";
+$resultwarehouses=mysqli_query($dbc,$query);
+
+$warehousecount = mysqli_num_rows($resultwarehouses);
+while($row = mysqli_fetch_array($resultwarehouses)) {
+    array_push($warehouses,$row);
+}
+
 session_start();
 
 # Atsijungimas
@@ -34,6 +49,20 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+/* Check if button name "Submit" is active, do this */
+if(isset($_POST['submit']))
+{
+	$count=count($_POST['id']);
+	
+for($i=0;$i<$count;$i++){
+$sql1="UPDATE packages SET warehouse='" . $_POST['warehouse'][$i] . "' WHERE id='" . $_POST['id'][$i] . "'";
+$result1=mysqli_query($dbc, $sql1);
+header('location: siuntu_priskyrimas_sandeliui.php');
+}
+}
+
+
 ?>
 
 <!doctype html>
@@ -121,8 +150,8 @@ if (!$dbc)
                 <table class='table table-striped'>
                     <thead>
                     <tr>
-                        <th>Kurjeris</th>
-                        <th>Siuntos kodas</th>
+                        <th>Sandėlis</th>
+                        <th>Siuntos ID</th>
                         <th>Išsiuntimo data</th>
                         <th>Pristatymo data</th>
                         <th>Pristatymo adresas</th>
@@ -131,49 +160,59 @@ if (!$dbc)
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><select class="form-select" id="courier" name="Kurjeris" required>
-                                <option>Kurjeris1</option>
-                                <option>Kurjeris2</option>
-                                <option>Kurjeris3</option>
-                            </select>
+                        <?php
+                        while($rows=mysqli_fetch_array($result)){
+                            #echo $rows['id'];
+                            #die();
+                        ?>
+                        <tr>
+                        <td>
+                                <?php 
+                                echo "<select name='warehouse[]' id='warehouse' class='form-control' value='Pasirinkite sandėlį'>";
+                                echo '<option value="'.$rows['warehouse'].'">'.$rows['warehouse'].'</option>';
+                        
+                                for($i=0;$i<$count;$i++){
+                                    echo '<option value="'.$warehouses[$i]['name'].'">'.$warehouses[$i]['name'].'</option>';
+                                }
+                                echo "</select>";
+                                ?>
                         </td>
-                        <td>31657</td>
-                        <td>2022-11-05</td>
-                        <td>2022-11-08</td>
-                        <td>Vilniaus g. 17, Utena, 34678</td>
-                        <td>Nepristatyta</td>
-                        <td>M</td>
-                    </tr>
-                    <tr>
-                        <td><select class="form-select" id="courier" name="Kurjeris" required>
-                                <option>Kurjeris1</option>
-                                <option>Kurjeris2</option>
-                                <option>Kurjeris3</option>
-                            </select>
+
+                        <td>
+                        <?php echo $rows['id']; 
+                        echo "<input type='hidden' name='id[]' value=".$rows['id']." />";
+                        ?>
                         </td>
-                        <td>31658</td>
-                        <td>2022-11-04</td>
-                        <td>2022-11-06</td>
-                        <td>Šilo g. 25, Anykščiai, 67541</td>
-                        <td>Nepristatyta</td>
-                        <td>L</td></tr>
-                    <tr>
-                        <td><select class="form-select" id="courier" name="Kurjeris" required>
-                                <option>Kurjeris1</option>
-                                <option>Kurjeris2</option>
-                                <option>Kurjeris3</option>
-                            </select>
+
+                        <td>
+                        <?php echo $rows['planned_delivery_date']; ?>
                         </td>
-                        <td>31659</td>
-                        <td>2022-11-03</td>
-                        <td>2022-11-10</td>
-                        <td>Mokyklos g. 5, Molėtai, 49735</td>
-                        <td>Užsakyta</td>
-                        <td>M</td></tr>
+
+                        <td>
+                        <?php echo $rows['delivery_date']; ?>
+                        </td>
+
+                        <td>
+                        <?php echo $rows['address'] ?>
+                        </td>
+
+                        <td>
+                        <?php echo $rows['status']; ?>
+                        </td>
+
+                        <td>
+                        <?php echo $rows['weight']; ?>
+                        </td>
+
+                        </tr>
+
+                        <?php
+                        }
+                        ?>
+
                     </tbody>
                 </table>
-                <input id='button' type='submit' name='submit_changes' class='btn btn-primary float-end' value="Išsaugoti"">
+                <input id='button' type='submit' name='submit' class='btn btn-primary float-end' value="Išsaugoti"">
             </div>
         </form>
     <?php

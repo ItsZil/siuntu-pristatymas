@@ -38,6 +38,17 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+if(isset($_POST["register_milage"]))
+{
+    $mileage = mysqli_real_escape_string($dbc, $_POST["milage"]);
+    $fuel = mysqli_real_escape_string($dbc, $_POST["fuel"]);
+    $user = mysqli_real_escape_string($dbc, $_SESSION["username"]);
+    $query = "INSERT INTO daily_milage (milage, fuel_used, courier_username) 
+    VALUES('$mileage', '$fuel', '$user')";
+    mysqli_query($dbc, $query);
+    header('Location: kurjeris.php');
+}
 ?>
 
 <!doctype html>
