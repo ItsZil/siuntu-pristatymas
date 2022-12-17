@@ -132,10 +132,10 @@ if (!$dbc)
     <br>
     <div class="container">
     <div class="container-fluid">
-    <a class='nav-link' href='pristatymo_patvirtinimas.php'>Užklausos</a>
-    <a class='nav-link' href='skundas.php'>Skundo registravismas</a>
+    <a class='nav-link' href='pristatymo_patvirtinimas.php'>Siuntos pristatymo patvirtinimas</a>
+    <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
         </div>
-        
+
     <form method="post">
     <div class="container">
         <div class="container">
