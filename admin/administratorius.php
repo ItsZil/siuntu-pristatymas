@@ -110,7 +110,7 @@ if (!$dbc)
         </div>
     </nav>
     <br>
-    <div class="container">
+    <div class="container-fluid">
     <a class='nav-link' href='uzklausos.php'>Užklausos</a>
     <a class='nav-link' href='skundai.php'>Skundai</a>
     <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>

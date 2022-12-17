@@ -131,10 +131,11 @@ if (!$dbc)
     </nav>
     <br>
     <div class="container">
-    <div class="container">
+    <div class="container-fluid">
     <a class='nav-link' href='pristatymo_patvirtinimas.php'>Užklausos</a>
     <a class='nav-link' href='skundas.php'>Skundo registravismas</a>
         </div>
+        
     <form method="post">
     <div class="container">
         <div class="container">
