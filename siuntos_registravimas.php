@@ -34,6 +34,35 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+if (isset($_POST["calculate_price"]))
+{
+    $package_weight = $_POST["package_weight"];
+    $package_size = $_POST["package_size"];
+    $package_price = 0;
+
+    if ($package_size == "small")
+    {
+        $package_price = 1.5;
+    }
+    else if ($package_size == "medium")
+    {
+        $package_price = 2.5;
+    }
+    else if ($package_size == "large")
+    {
+        $package_price = 3.5;
+    }
+
+    $package_price = $package_price * $package_weight;
+
+    $_SESSION["package_price"] = $package_price;
+    $_SESSION["package_weight"] = $package_weight;
+    $_SESSION["package_size"] = $package_size;
+
+    header('Location: siuntos_registravimas.php');
+}
+
 ?>
 
 <!doctype html>
@@ -134,18 +163,18 @@ if (!$dbc)
             <div class="col-auto">
                 <form method="post">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Jūsų vardas</label>
-                        <input type="name" class="form-control" id="name" name="name" maxlength="50" required>
+                        <label for="sender_name" class="form-label">Jūsų vardas</label>
+                        <input type="name" class="form-control" id="sender_name" name="sender_name" maxlength="50" required>
                         <br>
-                        <label for="surname" class="form-label">Jūsų pavardė</label>
-                        <input type="surname" class="form-control" id="surname" name="surname" maxlength="50" required>
+                        <label for="sender_surname" class="form-label">Jūsų pavardė</label>
+                        <input type="surname" class="form-control" id="sender_surname" name="sender_surname" maxlength="50" required>
                         <br>
-                        <label for="email" class="form-label">El. paštas</label>
-                        <input type="email" class="form-control" id="email" name="email" maxlength="75" required>
+                        <label for="sender_email" class="form-label">El. paštas</label>
+                        <input type="email" class="form-control" id="sender_email" name="sender_email" maxlength="75" required>
                         <br>
-                        <label for="phone" class="form-label">Telefono numeris</label>
-                        <input type="text" class="form-control" id="phone" name="phone" maxlength="12" required>
-                        <br>
+                        <label for="sender_phone" class="form-label">Telefono numeris</label>
+                        <input type="text" class="form-control" id="sender_phone" name="sender_phone" maxlength="12" required>
+                        <br><br>
 
                         <label for="delivery_method" class="form-label">Pristatymo būdas</label>
                         <select class="form-select" id="delivery_method" name="delivery_method" required>
@@ -155,13 +184,13 @@ if (!$dbc)
                         <br>
 
                         <div id="address_method" hidden>
-                            <label for="address" class="form-label">Siuntėjo adresas</label>
+                            <label for="sender_address" class="form-label">Siuntėjo adresas</label>
                             <input type="text" class="form-control" id="sender_address" name="sender_address" maxlength="100" required>
                             <br>
-                            <label for="city" class="form-label">Siuntėjo miestas</label>
+                            <label for="sender_city" class="form-label">Siuntėjo miestas</label>
                             <input type="text" class="form-control" id="sender_city" name="sender_city" maxlength="50" required>
                             <br>
-                            <label for="zip" class="form-label">Siuntėjo pašto kodas</label>
+                            <label for="sender_post_code" class="form-label">Siuntėjo pašto kodas</label>
                             <input type="text" class="form-control" id="sender_post_code" name="sender_post_code" maxlength="10" required>
                             <br>
                             <br>
@@ -173,22 +202,54 @@ if (!$dbc)
                             <br>
                             <label for="zip" class="form-label">Gavėjo pašto kodas</label>
                             <input type="text" class="form-control" id="recipient_post_code" name="recipient_post_code" maxlength="10" required>
+                            <label for="phone" class="form-label">Gavėjo telefono numeris</label>
+                            <input type="text" class="form-control" id="recipient_phone" name="recipient_phone" maxlength="12" required>
+                            <br>
                         </div>
 
                         <div id="pick_up_method">
                             <label for="pick_up_point" class="form-label>">Siuntos paiemimo paštomatas</label>
                             <select class="form-select" id="pick_up_point" name="pick_up_point" required>
-                                <option value="1">KTU Studentų Miestelis, Kaunas</option>
-                                <option value="2">Rimi Varniai, Kaunas</option>
+                                <?php
+                                    $sql = "SELECT * FROM post_machines";
+                                    $result = mysqli_query($dbc, $sql);
+                                    while ($row = mysqli_fetch_assoc($result))
+                                    {
+                                        $id = $row["id"];
+                                        $name = $row["name"];
+                                        $city = $row["city"];
+                                        echo "<option value='$id'>$name, $city</option>";
+                                    }
+                                ?>
                             </select>
                             <br>
                             <label for="delivery_point" class="form-label">Siuntos pristatymo paštomatas</label>
                             <select class="form-select" id="delivery_point" name="delivery_point" required>
-                                <option value="1">KTU Studentų Miestelis, Kaunas</option>
-                                <option value="2">Rimi Varniai, Kaunas</option>
+                                <?php
+                                    $result = mysqli_query($dbc, $sql);
+                                    while ($row = mysqli_fetch_assoc($result))
+                                    {
+                                        $id = $row["id"];
+                                        $name = $row["name"];
+                                        $city = $row["city"];
+                                        echo "<option value='$id'>$name, $city</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
 
+                        <br>
+                        <label for="package_weight" class="form-label">Siuntos svoris (kg)</label>
+                        <input type="number" class="form-control" name="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
+                        <br>
+                        <label for="package_size">Siuntos dydis:</label>
+                        <select class="form-control" name="siuntos_dydis">
+                            <option>XS</option>
+                            <option>S</option>
+                            <option>M</option>
+                            <option>L</option>
+                            <option>XL</option>
+                        </select>
                         <br>
                         <label for="price" class="form-label">Siuntos kaina:</label>
                         <div class="input-group mb3">
