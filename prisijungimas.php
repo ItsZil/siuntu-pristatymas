@@ -1,8 +1,8 @@
 <?php
   $server = "localhost";
   $db = "siuntu_tarnyba";
-  $user = "siuntu_tarnyba";
-  $password = "siuntu_tarnyba";
+  $user = "root";
+  $password = "";
   $lentele = "users";
   $dbc=mysqli_connect($server,$user,$password,$db);
 
@@ -34,7 +34,7 @@
     {
       $_SESSION["username"] = $username;
       $_SESSION["incorrect_login"] = "Neteisingas prisijungimo vardas arba slaptažodis";
-      header('Location: login.php');
+      header('Location: prisijungimas.php');
     }
     else
     {
@@ -53,7 +53,7 @@
       {
         $_SESSION["username"] = $username;
         $_SESSION["incorrect_login"] = "Neteisingas prisijungimo vardas arba slaptažodis";
-        header('Location: login.php');
+        header('Location: prisijungimas.php');
       }
     }
     mysqli_close($dbc);
@@ -69,7 +69,7 @@
         echo getHeader("Prisijungimas");
       ?>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <div class="text-center">
       <h2>Siuntų pristatymo tarnyba</h2>
       <p><i>Prašome prisijungti prie sistemos</i></p>
@@ -122,8 +122,13 @@
 
         <!-- Registracijos mygtukas -->
         <div>
-          <p>Neturite paskyros? <a href="register.php">Registruotis</a></p>
+          <p>Neturite paskyros? <a href="registracija.php">Registruotis</a></p>
+      </div>
       </div>
     </form>
+
+    <?php
+    include_once "includes/footer.html";
+    ?>
 </body>
 </html>
