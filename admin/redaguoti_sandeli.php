@@ -34,6 +34,74 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+$id=$_GET['id'];
+$sql="SELECT * FROM warehouses WHERE id=$id";
+$result=mysqli_query($dbc, $sql);
+$row=mysqli_fetch_assoc($result);
+$name=$row['name'];
+$city=$row['city'];
+$address=$row['address'];
+$phone=$row['phone'];
+$email=$row['email'];
+$area=$row['area'];
+$shelves=$row['area'];
+$name_err=$city_err=$address_err=$phone_err=$email_err=$area_err=$shelves_err="";
+if($_SERVER["REQUEST_METHOD"]=="POST") {
+    if (empty($_POST["name"])) {
+        $name_err = "Įveskite pavadinimą";
+    } else {
+        $name = trim($_POST['name']);
+    }
+    if (empty($_POST["city"])) {
+        $city_err = "Įveskite miestą";
+    } else {
+        $city = trim($_POST['city']);
+    }
+    if (empty($_POST["address"])) {
+        $address_err = "Įveskite adresą";
+    } else {
+        $address = trim($_POST['address']);
+    }
+    if (empty($_POST["phone"])) {
+        $phone_err = "Įveskite telefono numerį";
+    } else {
+        $phone = trim($_POST['phone']);
+    }
+    if (empty($_POST["email"])) {
+        $email_err = "Įveskite el. paštą";
+    } else {
+        $email = trim($_POST['email']);
+    }
+    if (empty($_POST["area"])) {
+        $area_err = "Įveskite sandėlio plotą";
+    } else {
+        $area = trim($_POST['area']);
+    }
+    if (empty($_POST["shelves"])) {
+        $shelves_err = "Įveskite lentynų skaičių";
+    } else {
+        $shelves = trim($_POST['shelves']);
+    }
+    if (empty($name_err) && empty($city_err) && empty($address_err) && empty($phone_err) && empty($email_err) && empty($area_err) && empty($shelves_err)) {
+        $sql = "UPDATE warehouses SET name=?, city=?, address=?, phone=?, email=?, area=?, shelves=? WHERE id=$id";
+        if ($stmt = mysqli_prepare($dbc, $sql)) {
+            mysqli_stmt_bind_param($stmt, "sssssii", $param_name, $param_city, $param_address, $param_phone, $param_email, $param_area, $param_shelves);
+            $param_name = $name;
+            $param_city = $city;
+            $param_address = $address;
+            $param_phone = $phone;
+            $param_email = $email;
+            $param_area = $area;
+            $param_shelves = $shelves;
+            if (mysqli_stmt_execute($stmt)) {
+                header("location:sandeliai.php");
+            } else {
+                echo "Įvyko klaida, bandykite dar kartą";
+            }
+        }
+    }
+}
 ?>
 
 <!doctype html>
@@ -109,8 +177,61 @@ if (!$dbc)
         </div>
     </nav>
     <br>
+    <div class="container">
+        <h3>Sandėlio redagavimas</h3>
+        <?php
 
-    
+        $result
+        ?>
+        <form method="post">
+            <!-- Pavadinimas -->
+            <div class="form-group col-sm-12">
+                <label for="name">Sandėlio pavadinimas</label>
+                <input type="text" class="form-control" name="name" value="<?php echo $name ?>" maxlength="50" required>
+            </div>
+
+            <!-- Miestas -->
+            <div class="form-group col-sm-12">
+                <label for="city">Miestas</label>
+                <input type="text" class="form-control" name="city" value="<?php echo $city ?>" required>
+            </div>
+
+            <!-- Adresas -->
+            <div class="form-group col-sm-12">
+                <label for="address">Adresas</label>
+                <input type="text" class="form-control" name="address" value="<?php echo $address ?>" required>
+            </div>
+
+            <!-- Telefono numeris -->
+            <div class="form-group col-sm-12">
+                <label for="phone">Telefono numeris</label>
+                <input type="tel" class="form-control" name="phone" value="<?php echo $phone ?>" maxlength="12" pattern="+[0-9]{11}" required>
+            </div>
+
+            <!-- Elektroninis paštas -->
+            <div class="form-group col-sm-12">
+                <label for="email">El. paštas</label>
+                <input type="email" class="form-control" name="email" value="<?php echo $email ?>" maxlength="75" required>
+
+            </div>
+
+            <!-- Plotas -->
+            <div class="form-group col-sm-12">
+                <label for="area">Plotas</label>
+                <input type="number" class="form-control" name="area" value="<?php echo $area ?>" required>
+            </div>
+
+            <!-- Lentynų skaičius -->
+            <div class="form-group col-sm-12">
+                <label for="shelves">Lentynų skaičius</label>
+                <input type="number" class="form-control" name="shelves" value="<?php echo $shelves ?>" required>
+            </div>
+
+            <!-- Registracijos mygtukas -->
+            <input type="submit" name='ok' class="btn btn-primary btn-block mb-2" value="Įrašyti">
+    </div>
+    </form>
+    </div>
     <?php
         include_once "../includes/footer.html";
     ?>

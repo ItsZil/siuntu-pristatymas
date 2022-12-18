@@ -34,6 +34,11 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+$selectedCity="";
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    $selectedCity=$_POST['selection'];
+}
 ?>
 
 <!doctype html>
@@ -137,35 +142,56 @@ if (!$dbc)
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Sandėlis1</td>
-                <td>Liepos g. 15, Kaunas, 50278</td>
-                <td>+37069728643</td>
-                <td>sandelis1@gmail.com</td>
-                <td>50</td>
-                <td>150</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr
-            <tr>
-                <td>Sandėlis2</td>
-                <td>Aušros g. 17, Kaunas, 50278</td>
-                <td>+37062157846</td>
-                <td>sandelis2@gmail.com</td>
-                <td>35</td>
-                <td>120</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr>
-            <tr>
-                <td>Sandėlis3</td>
-                <td>Pramonės prospektas 198, Kaunas, 50278</td>
-                <td>+37068432617</td>
-                <td>sandelis3@gmail.com</td>
-                <td>25</td>
-                <td>100</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr>
+            <?php
+            if(!empty($selectedCity)){
+                $sql="SELECT * FROM warehouses WHERE city = '$selectedCity'";
+            } else{
+                $sql="SELECT * FROM warehouses";
+            }
+            $result=mysqli_query($dbc, $sql);
+            while($row=mysqli_fetch_assoc($result)){
+                $address=$row['address'].", ".$row['city'];
+                echo
+                "<tr>
+                    <td>".$row['name']."</td>
+                    <td>$address</td>
+                    <td>".$row['phone']."</td>
+                    <td>".$row['email']."</td>
+                    <td>".$row['area']."</td>
+                    <td>".$row['shelves']."</td>
+                    <td><a class='btn btn-primary me-1' href='redaguoti_sandeli.php?id=".$row['id']."'>Redaguoti</a>
+                    <a class='btn btn-primary ms-3' href='istrinti_sandeli.php?id=".$row['id']."'>Ištrinti</a></td>
+                </tr>";
+            }
+            ?>
             </tbody>
         </table>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <form method="post" name="filtering">
+            <label for="selection">Nurodyti miestą:</label>
+            <?php
+            $sql="SELECT DISTINCT city FROM warehouses";
+            $result=mysqli_query($dbc, $sql);
+            if(mysqli_num_rows($result)>0){
+                echo "<select name='selection'><option value=''>Visi</option>";
+                while ($row=mysqli_fetch_assoc($result)){
+                    $cityName=$row['city'];
+                    if($cityName==$selectedCity){
+                        echo "<option value='$cityName' selected>$cityName</option>";
+                    } else{
+                        echo "<option value='$cityName'>$cityName</option>";
+                    }
+                }
+                echo "</select>";
+            }
+            ?>
+                    <input type="submit" name='ok' class="btn btn-primary btn-block mb-2" value="Filtruoti">
+                </form>
+            </div>
+        </div>
     </div>
     <?php
         include_once "../includes/footer.html";
