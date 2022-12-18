@@ -33,7 +33,6 @@ else
 if (isset($_POST["track_package"]))
 {
     $package_tracking_id = $_POST['package_tracking_id'];
-    $_SESSION['package_tracking_id'] = $package_tracking_id;
 
     // Check if the package exists
     $sql = "SELECT * FROM packages WHERE id = '$package_tracking_id'";
@@ -43,11 +42,11 @@ if (isset($_POST["track_package"]))
 
     if ($count == 1)
     {
-        $from_address = $row['from_address'];
         $to_address = $row['to_address'];
         $planned_delivery_date = $row['planned_delivery_date'];
         $size = $row['size'];
         $long_status = $row['status'];
+        $recipient_id = $row['recipient_id'];
 
         $short_status = "Užregistruota";
         if ($long_status == "Siunta atvyko į sandelį")
@@ -62,27 +61,21 @@ if (isset($_POST["track_package"]))
         {
             $short_status = "Pristatyta";
         }
-        else
-        {
-            $short_status == $long_status;
-        }
 
-        $_SESSION['from_address'] = $from_address;
+        $_SESSION['package_tracking_id'] = $package_tracking_id;
         $_SESSION['to_address'] = $to_address;
         $_SESSION['planned_delivery_date'] = $planned_delivery_date;
         $_SESSION['size'] = $size;
         $_SESSION['long_status'] = $long_status;
         $_SESSION['short_status'] = $short_status;
+        $_SESSION['recipient_id'] = $recipient_id;
     }
     else
     {
-        $_SESSION["notification_message"] = "Siunta $package_tracking_id nerasta. Įsitikinkite, kad įvedate teisingą siuntos numerį.";
+        $_SESSION["notification_message"] = "Siuntos numeriu $package_tracking_id nepavyko rasti. Įsitikinkite, kad įvedate teisingą siuntos numerį.";
         $_SESSION["notification_status"] = 0;
-
-        unset($_SESSION['package_tracking_id']);
     }
     unset($_POST['track_package']);
-    header('Location: sekimas.php');
 }
 
 if (!$dbc)
@@ -177,7 +170,6 @@ if (!$dbc)
                 // Show the notification message from session
                 if (isset($_SESSION["notification_message"]))
                 {
-                    //die($_SESSION["notification_status"]);
                     $message = $_SESSION["notification_message"];
                     if ($_SESSION["notification_status"] == 1)
                     {
@@ -191,7 +183,6 @@ if (!$dbc)
                     unset($_SESSION["notification_status"]);
                 }
             ?>
-
             <form method="post">
                 <div class="mb-3">
                     <label for="package_tracking_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
@@ -204,7 +195,7 @@ if (!$dbc)
 </div>
 
 <?php
-    if (isset($_SESSION["short_status"]))
+    if (isset($_SESSION["short_status"]) && isset($_SESSION["package_tracking_id"]))
     {
         echo "<div class='container'>
                 <div class='container'>
@@ -217,11 +208,12 @@ if (!$dbc)
                     <div class='col-12'>
                         <table class='table table-striped'>
                             <thead>
-                                <tr>
-                                    <th scope='col'>Siuntos būsena</th>
-                                    <th scope='col'>Siuntos dydis</th>
-                                    <th scope='col'>Numatyta pristatymo data</th>
-                                    <th scope='col'>Siuntos būsenos aprašymas</th>
+                                <tr>    
+                                    <th scope='col'>Būsena</th>
+                                    <th scope='col'>Dydis</th>
+                                    <th scope='col'>Numatyta pristatymo data</th>   
+                                    <th scope='col'>Pristatymo adresas</th>
+                                    <th scope='col'>Būsenos aprašymas</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -229,6 +221,7 @@ if (!$dbc)
                                     <td>".$_SESSION["short_status"]."</td>
                                     <td>".$_SESSION["size"]."</td>
                                     <td>".$_SESSION["planned_delivery_date"]."</td>
+                                    <td>".$_SESSION["to_address"]."</td>
                                     <td>".$_SESSION["long_status"]."</td>
                                 </tr>
                             </tbody>
@@ -238,15 +231,11 @@ if (!$dbc)
             </div>
         ";
     }
-    else if (isset($_SESSION["track_package"]))
-    {
-        echo "<p>Siunta pateiktu numeriu nerasta.</p>";
-    }
 ?>
 
 <br>
 <?php
-    if (isset($_SESSION["package_id"]))
+    if (isset($_SESSION["recipient_id"]) && isset($_SESSION["package_tracking_id"]))
     {
         echo "<div class='container'>
                 <div class='container'>
@@ -256,11 +245,18 @@ if (!$dbc)
                     </div>
                 </div>
                 <form method='post'>
+                    <label>Siuntos peradresavimas galimas tik į paštomatą, esantį tame pačiame mieste, į kurį siunta pristatoma.</label>
+                    <br><br>
                     <label for='delivery_point' class='form-label'>Pasirinkite, į kurį paštomatą norėtumėte peradresuoti:</label>
-                    <select class='form-select' id='delivery_point' name='delivery_point' required>
-                        <option value='1'>KTU Studentų Miestelis, Kaunas</option>
-                        <option value='2'>Rimi Varniai, Kaunas</option>
-                    </select>
+                    <select class='form-select' id='delivery_point' name='delivery_point' required>";
+                    // Print all post_machines in the same city as the recipient (saved in the clients table)
+                    $sql = "SELECT * FROM post_machines WHERE city = (SELECT city FROM clients WHERE id = ".$_SESSION["recipient_id"].")";
+                    $result = $dbc->query($sql);
+                    while ($row = $result->fetch_assoc())
+                    {
+                        echo "<option value='".$row["id"]."'>".$row["name"]. ", ". $row["city"]."</option>";
+                    }
+                    echo "</select>
                     <br>
                     <label for='post_code' class='form-label'>Įveskite savo pašto kodą, kad patvirtinti tapatybę:</label>
                     <input type='number' class='form-control' name='post_code'  placeholder='Pašto kodas' required>

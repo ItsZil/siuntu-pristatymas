@@ -229,9 +229,7 @@ if (isset($_POST["register_package"]))
     }
 
     // Get the id of the sender
-    $sender_query = "SELECT id FROM clients WHERE name = '$sender_name' AND surname = '$sender_surname' AND address = '$from_address' AND city = '$sender_city' AND post_code = '$sender_post_code' AND phone = '$sender_phone' AND email = '$sender_email' AND type = 1";
-    $sender_result = mysqli_query($dbc, $sender_query);
-    $sender_id = mysqli_fetch_assoc($sender_result)["id"];
+    $sender_id = mysqli_insert_id($dbc);
 
     $recipient_query = "SELECT id FROM clients WHERE name = '$recipient_name' AND surname = '$recipient_surname' AND address = '$to_address' AND city = '$recipient_city' AND post_code = '$recipient_post_code' AND phone = '$recipient_phone' AND type = 2";
     $recipient_result = mysqli_query($dbc, $recipient_query);
@@ -242,9 +240,7 @@ if (isset($_POST["register_package"]))
     }
 
     // Get the id of the recipient
-    $recipient_query = "SELECT id FROM clients WHERE name = '$recipient_name' AND surname = '$recipient_surname' AND address = '$to_address' AND city = '$recipient_city' AND post_code = '$recipient_post_code' AND phone = '$recipient_phone' AND type = 2";
-    $recipient_result = mysqli_query($dbc, $recipient_query);
-    $recipient_id = mysqli_fetch_assoc($recipient_result)["id"];
+    $recipient_id = mysqli_insert_id($dbc);
 
     // Insert the package into the database, for delivery_date use DATETIME
     $delivery_date = date("Y-m-d H:i:s");
