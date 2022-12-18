@@ -34,6 +34,11 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+$selectedCity="";
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    $selectedCity=$_POST['selection'];
+}
 ?>
 
 <!doctype html>
@@ -138,7 +143,11 @@ if (!$dbc)
             </thead>
             <tbody>
             <?php
-            $sql="SELECT * FROM warehouses";
+            if(!empty($selectedCity)){
+                $sql="SELECT * FROM warehouses WHERE city = '$selectedCity'";
+            } else{
+                $sql="SELECT * FROM warehouses";
+            }
             $result=mysqli_query($dbc, $sql);
             while($row=mysqli_fetch_assoc($result)){
                 $address=$row['address'].", ".$row['city'];
@@ -157,6 +166,32 @@ if (!$dbc)
             ?>
             </tbody>
         </table>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <form method="post">
+            <label for="selection">Nurodyti miestą:</label>
+            <?php
+            $sql="SELECT DISTINCT city FROM warehouses";
+            $result=mysqli_query($dbc, $sql);
+            if(mysqli_num_rows($result)>0){
+                echo "<select name='selection'><option value=''>Visi</option>";
+                while ($row=mysqli_fetch_assoc($result)){
+                    $cityName=$row['city'];
+                    if($cityName==$selectedCity){
+                        echo "<option value='$cityName' selected>$cityName</option>";
+                    } else{
+                        echo "<option value='$cityName'>$cityName</option>";
+                    }
+                }
+                echo "</select>";
+            }
+            ?>
+                    <input type="submit" name='ok' class="btn btn-primary btn-block mb-2" value="Filtruoti">
+                </form>
+            </div>
+        </div>
     </div>
     <?php
         include_once "../includes/footer.html";
