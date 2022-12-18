@@ -41,8 +41,8 @@ array_push($carstatusarray, "<option value='Apziurimas'>Apžiūrimas</option>");
 array_push($carstatusarray, "<option value='Taisomas'>Taisomas</option>");
 
 $radioarray = array();
-array_push($radioarray, "Yra");
-array_push($radioarray, "Nėra");
+array_push($radioarray, "<option value='Yra'>Yra</option>");
+array_push($radioarray, "<option value='Nera'>Nėra</option>");
 
 session_start();
 
@@ -76,19 +76,19 @@ if(isset($_POST['update_car']))
 {
     $date = date(DATE_ATOM, mktime(0, 0, 0, 7, 1, 2000));
 
-    $id = $_POST['selected_id'];
-    $date = $_POST['registration_date'];
-    $mark = $_POST['mark'];
-    $model = $_POST['model'];
-    $reg_number = $_POST['reg_number'];
-    $year = $_POST['year'];
-    $mileage = $_POST['mileage'];
-    $transmission = $_POST['transmission'];
-    $fuel_type = $_POST['fuel_type'];
-    $baggage_type = $_POST['baggage_type'];
-    $radio = $_POST['radio'];
-    $car_status = $_POST['car_status'];
-    $value = $_POST['value'];
+    $id = mysqli_real_escape_string($dbc, $_POST['selected_id']);
+    $date = mysqli_real_escape_string($dbc, $_POST['registration_date']);
+    $mark = mysqli_real_escape_string($dbc, $_POST['mark']);
+    $model = mysqli_real_escape_string($dbc, $_POST['model']);
+    $reg_number = mysqli_real_escape_string($dbc, $_POST['reg_number']);
+    $year = mysqli_real_escape_string($dbc, $_POST['year']);
+    $mileage = mysqli_real_escape_string($dbc, $_POST['mileage']);
+    $transmission = mysqli_real_escape_string($dbc, $_POST['transmission']);
+    $fuel_type = mysqli_real_escape_string($dbc, $_POST['fuel_type']);
+    $baggage_type = mysqli_real_escape_string($dbc, $_POST['baggage_type']);
+    $radio = mysqli_real_escape_string($dbc, $_POST['radio']);
+    $car_status = mysqli_real_escape_string($dbc, $_POST['car_status']);
+    $value = mysqli_real_escape_string($dbc, $_POST['value']);
     $courier = $_POST['courier'];
 
     $query = "UPDATE cars SET mark='$mark', model='$model', reg_number='$reg_number', 
@@ -261,7 +261,7 @@ if(isset($_POST['update_car']))
                         <br>
                         <label for="car_status" class="form-label">Būklė</label>
                         <?php
-                        echo "<select name='car_status' id='car_status' class='form-control' value='Radijas'>";
+                        echo "<select name='car_status' id='car_status' class='form-control' value='Kuro tipas'>";
                         echo '<option value="'.$row['car_status'].'">'.$row['car_status'].'</option>';
                         $currentstatus=$row['car_status'];
 

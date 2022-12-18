@@ -46,14 +46,17 @@ if (!$dbc)
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
 
-if(isset($_POST["mileage"]))
+if(isset($_POST["submit_mileage"]))
 {
     $mileage = mysqli_real_escape_string($dbc, $_POST["mileage"]);
     $fuel = mysqli_real_escape_string($dbc, $_POST["fuel"]);
     $id = mysqli_real_escape_string($dbc, $_SESSION["id"]);
-    $query = "INSERT INTO daily_mileage (mileage, fuel_used, courier_id) 
-    VALUES('$mileage', '$fuel', '$id')";
-    mysqli_query($dbc, $query);
+    $query2="SELECT * FROM cars WHERE courier_id='$id'";
+    $res=mysqli_query($dbc, $query2);
+    $rows=mysqli_fetch_array($res);
+    $query = "INSERT INTO daily_mileage (mileage, fuel_used, courier_id, car_id) 
+    VALUES('$mileage', '$fuel', '$id', '".$rows['id']."')";
+    $result1=mysqli_query($dbc, $query);
     header('Location: kurjeris.php');
 }
 
@@ -61,6 +64,7 @@ if(isset($_POST['select_packages']))
 {
 	$count=count($_POST['selected_packages']);
     $packageids=$_POST['selected_packages'];
+
 	
 for($i=0;$i<$count;$i++){
     $sql1="UPDATE packages SET courier_id='".$_SESSION['id']."', status='Siunta išvežta pristatymui' WHERE id='" . $packageids[$i] . "'";
@@ -234,7 +238,7 @@ for($i=0;$i<$count;$i++){
                         <label for="fuel" class="form-label">Kuro sanaudos</label>
                         <input type="text" class="form-control" id="fuel" name="fuel" required>
                     </div>
-                    <input type='submit' name='mileage' class='btn btn-primary float-end' value="Pateikti">
+                    <input type='submit' name='submit_mileage' class='btn btn-primary float-end' value="Pateikti">
                 </form>
             </div>
         </div>

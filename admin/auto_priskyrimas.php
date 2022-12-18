@@ -62,8 +62,8 @@ header('location: auto_priskyrimas.php');
 
 if(isset($_POST['assign_car']))
 {
-	$count=count($_POST['id']);
-    $courierid=$_POST['courier'];
+	$count=count(mysqli_real_escape_string($dbc, $_POST['id']));
+    $courierid=mysqli_real_escape_string($dbc, $_POST['courier']);
 	
 for($i=0;$i<$count;$i++){
     $sql1="UPDATE cars SET courier_id='".$courierid[$i]."'WHERE id='" . $_POST['id'][$i] . "'";
