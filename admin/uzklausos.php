@@ -131,13 +131,14 @@ if (!$dbc)
             $result=mysqli_query($dbc, $sql);
             if(mysqli_num_rows($result)>0){
                 while($row=mysqli_fetch_assoc($result)){
+                    $id=$row['id'];
                     echo
                     "<tr>
                         <td>".$row['topic']."</td>
                         <td style='max-width: 500px'>".$row['request']."</td>
                         <td>
-                    <button class='btn btn-primary me-1'>Atsakyti</button>
-                    <button class='btn btn-primary ms-3'>Ištrinti</button>
+                    <a class='btn btn-primary me-1' href='uzklausos_perziura.php?id=$id'>Peržiūrėti</a>
+                    <a class='btn btn-primary ms-3' href='istrinti_uzklausa.php?id=$id'>Ištrinti</a>
                 </td>
                     </tr>";
                 }
