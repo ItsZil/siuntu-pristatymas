@@ -41,7 +41,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "../includes/header.php";
-        echo getHeader("Skundo registravimas");
+        echo getHeader("Pristatymo patvirtinimas");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -129,7 +129,51 @@ if (!$dbc)
                 <hr>
             </div>
         </div>
-        
+
+        <?php
+        // Create a table of packages that are assigned to the courier (courier_id = $user_id)
+        $user_id = $_SESSION["id"];
+        $query = "SELECT * FROM packages WHERE courier_id = $user_id";
+        $result = mysqli_query($dbc, $query);
+
+        echo "<div class='container'>
+                    <div class='col-12'>
+                        <table class='table table-striped'>
+                            <thead>
+                                <tr>    
+                                    <th scope='col'>Siuntos numeris</th>
+                                    <th scope='col'>Dydis</th>
+                                    <th scope='col'>Pristatymo adresas</th> 
+                                    <th scope='col'>Numatoma pristatymo data</th>
+                                    <th scope='col'>Patvirtinimas</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+                            while ($row = mysqli_fetch_array($result))
+                            {
+                                $package_id = $row["id"];
+                                $size = $row["size"];
+                                $delivery_address = $row["to_address"];
+                                $delivery_date = $row["planned_delivery_date"];
+                                echo "<tr>
+                                        <td>$package_id</td>
+                                        <td>$size</td>
+                                        <td>$delivery_address</td>
+                                        <td>$delivery_date</td>
+                                        <td>
+                                            <form method='post'>
+                                                <input type='hidden' name='package_id' value='$package_id'>
+                                                <input type='submit' name='confirm' class='btn btn-success' value='Patvirtinti'>
+                                            </form>
+                                        </td>
+                                    </tr>";
+                            }
+                            echo "</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>";
+        ?>
     </div>
     <?php
         include_once "../includes/footer.html";

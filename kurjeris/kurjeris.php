@@ -178,9 +178,8 @@ for($i=0;$i<$count;$i++){
             <thead>
             <tr>
                 <th>Pasirinkti</th>
-                <th>Siuntos kodas</th>
-                <th>Išsiuntimo data</th>
-                <th>Pristatymo data</th>
+                <th>Siuntos numeris</th>
+                <th>Numatoma pristatymo data</th>
                 <th>Siuntėjo adresas</th>
                 <th>Gavėjo adresas</th>
                 <th>Statusas</th>
@@ -199,7 +198,6 @@ for($i=0;$i<$count;$i++){
                         <input type="checkbox" name="selected_packages[]" class="custom-control-input" id="pasirinkta" value="<?php echo $rows['id']; ?>"></td>
                 <td><?php echo $rows['id']; ?></td>
                 <td><?php echo $rows['planned_delivery_date']; ?></td>
-                <td><?php echo $rows['delivery_date']; ?></td>
                 <td><?php echo $rows['from_address']; ?></td>
                 <td><?php echo $rows['to_address']; ?></td>
                 <td><?php echo $rows['status']; ?></td>
