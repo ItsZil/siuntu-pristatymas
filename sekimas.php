@@ -47,6 +47,8 @@ if (isset($_POST["track_package"]))
         $size = $row['size'];
         $long_status = $row['status'];
         $recipient_id = $row['recipient_id'];
+        $sender_id = $row['sender_id'];
+        $delivery_method = $row['delivery_method'];
 
         $short_status = "Užregistruota";
         if ($long_status == "Siunta atvyko į sandelį")
@@ -63,12 +65,14 @@ if (isset($_POST["track_package"]))
         }
 
         $_SESSION['package_tracking_id'] = $package_tracking_id;
+        $_SESSION['delivery_method'] = $delivery_method;
         $_SESSION['to_address'] = $to_address;
         $_SESSION['planned_delivery_date'] = $planned_delivery_date;
         $_SESSION['size'] = $size;
         $_SESSION['long_status'] = $long_status;
         $_SESSION['short_status'] = $short_status;
         $_SESSION['recipient_id'] = $recipient_id;
+        $_SESSION['sender_id'] = $sender_id;
     }
     else
     {
@@ -76,6 +80,59 @@ if (isset($_POST["track_package"]))
         $_SESSION["notification_status"] = 0;
     }
     unset($_POST['track_package']);
+}
+
+if (isset($_POST["redirect_package"]))
+{
+    $package_tracking_id = $_SESSION['package_tracking_id'];
+    $delivery_point = $_POST['delivery_point'];
+    $confirmation_phone = $_POST['confirmation_phone'];
+
+    $recipient_id = $_SESSION['recipient_id'];
+    $sender_id = $_SESSION['sender_id'];
+
+    // Check if the confirmation_phone matches the recipient's or sender's phone number
+    $sql = "SELECT phone FROM clients WHERE id = '$recipient_id' OR id = '$sender_id'";
+    $result = mysqli_query($dbc, $sql);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $count = mysqli_num_rows($result);
+    if ($count >= 1)
+    {
+        $phone = $row['phone'];
+        if ($phone == $confirmation_phone)
+        {
+            $sql = "SELECT address FROM post_machines WHERE id = '$delivery_point'";
+            $result = mysqli_query($dbc, $sql);
+            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            $new_to_address = $row['address'];
+
+            if ($new_to_address == $_SESSION['to_address'])
+            {
+                $_SESSION["notification_message"] = "Siuntos peradresuoti į tą patį paštomatą negalite.";
+                $_SESSION["notification_status"] = 0;
+                die();
+            }
+
+            $sql = "UPDATE packages SET to_address = '$new_to_address', planned_delivery_date = DATE_ADD(planned_delivery_date, INTERVAL 1 DAY) WHERE id = '$package_tracking_id'";
+            $result = mysqli_query($dbc, $sql);
+
+            $_SESSION["notification_message"] = "Siunta sėkmingai peardresuota į $new_to_address.";
+            $_SESSION["notification_status"] = 1;
+
+            $_SESSION["to_address"] = $new_to_address;
+            header('Location: sekimas.php');
+        }
+        else
+        {
+            $_SESSION["notification_message"] = "Nepavyko patvirtinti tapatybės. Įsitikinkite, kad įvedate tą patį telefono numerį, kuris buvo naudotas registruojant siuntą.";
+            $_SESSION["notification_status"] = 0;
+        }
+    }
+    else
+    {
+        $_SESSION["notification_message"] = "Nepavyko patvirtinti tapatybės. Įsitikinkite, kad įvedate tą patį telefono numerį, kuris buvo naudotas registruojant siuntą.";
+        $_SESSION["notification_status"] = 0;
+    }
 }
 
 if (!$dbc)
@@ -235,7 +292,7 @@ if (!$dbc)
 
 <br>
 <?php
-    if (isset($_SESSION["recipient_id"]) && isset($_SESSION["package_tracking_id"]))
+    if (isset($_SESSION["recipient_id"]) && isset($_SESSION["package_tracking_id"]) && isset($_SESSION["delivery_method"]) && $_SESSION["delivery_method"] == 1)
     {
         echo "<div class='container'>
                 <div class='container'>
@@ -258,11 +315,30 @@ if (!$dbc)
                     }
                     echo "</select>
                     <br>
-                    <label for='post_code' class='form-label'>Įveskite savo pašto kodą, kad patvirtinti tapatybę:</label>
-                    <input type='number' class='form-control' name='post_code'  placeholder='Pašto kodas' required>
+                    <label for='confirmation_phone' class='form-label'>Įveskite savo telefono numerį, kad patvirtinti tapatybę:</label>
+                    <input type='number' class='form-control' name='confirmation_phone'  placeholder='Telefono numeris' required>
                     <br>
                     <input type='submit' name='redirect_package' class='btn btn-primary float-end' value='Peradresuoti siuntą'>
                 </form>
+            </div>
+        ";
+    }
+    else if (isset($_SESSION["delivery_method"]) && $_SESSION["delivery_method"] == 2)
+    {
+        echo "<div class='container'>
+                <div class='container'>
+                    <div class='col-12'>
+                        <h1>Siuntos peradresavimas</h1>
+                        <hr>
+                    </div>
+                </div>
+                <div class='container'>
+                    <div class='col-12'>
+                        <label>Siuntos peradresavimas galimas tik į paštomatą, esantį tame pačiame mieste, į kurį siunta pristatoma.</label>
+                        <br><br>
+                        <label>Siunta pristatomas tiesiogiai į gavėjo namus, todėl peradresuoti siuntą į kitą adresą negalima.</label>
+                    </div>
+                </div>
             </div>
         ";
     }
