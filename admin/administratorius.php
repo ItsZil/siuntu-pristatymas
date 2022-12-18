@@ -115,7 +115,8 @@ if (!$dbc)
     <a class='nav-link' href='skundai.php'>Skundai</a>
     <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
     <a class='nav-link' href='auto_priskyrimas.php'>Auto priskyrimas</a>
-    <a class='nav-link' href='siuntu_priskyrimas.php'>Siuntų priskyrimas</a>
+    <a class='nav-link' href='siuntu_priskyrimas_kurjeriui.php'>Siuntų priskyrimas kurjeriui</a>
+    <a class='nav-link' href='siuntu_priskyrimas_sandeliui.php'>Siuntų priskyrimas sandėliui</a>
     <a class='nav-link' aria-current='page'  href='sandeliai.php'>Sandėliai</a>
         </div>
 
