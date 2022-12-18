@@ -110,7 +110,6 @@ if (isset($_POST["redirect_package"]))
             {
                 $_SESSION["notification_message"] = "Siuntos peradresuoti į tą patį paštomatą negalite.";
                 $_SESSION["notification_status"] = 0;
-                die();
             }
 
             $sql = "UPDATE packages SET to_address = '$new_to_address', planned_delivery_date = DATE_ADD(planned_delivery_date, INTERVAL 1 DAY) WHERE id = '$package_tracking_id'";
@@ -133,6 +132,47 @@ if (isset($_POST["redirect_package"]))
         $_SESSION["notification_message"] = "Nepavyko patvirtinti tapatybės. Įsitikinkite, kad įvedate tą patį telefono numerį, kuris buvo naudotas registruojant siuntą.";
         $_SESSION["notification_status"] = 0;
     }
+    unset($_POST['redirect_package']);
+}
+
+if (isset($_POST["confirm_signature_phone"]))
+{
+    $recipient_id = $_SESSION['recipient_id'];
+    $sender_id = $_SESSION['sender_id'];
+    $confirmation_phone = $_POST['confirmation_phone'];
+
+    $sql = "SELECT phone FROM clients WHERE id = '$recipient_id' OR id = '$sender_id'";
+    $result = mysqli_query($dbc, $sql);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $count = mysqli_num_rows($result);
+    if ($count >= 1)
+    {
+        $phone = $row['phone'];
+        if ($phone == $confirmation_phone)
+        {
+            // Get the package's signature_data from the database
+            $package_tracking_id = $_SESSION['package_tracking_id'];
+            $sql = "SELECT signature FROM packages WHERE id = '$package_tracking_id'";
+            $result = mysqli_query($dbc, $sql);
+            $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            $signature_data = $row['signature'];
+            //die($signature_data);
+
+            $_SESSION['signature_data'] = $signature_data;
+            $_SESSION["show_signature"] = 1;
+        }
+        else
+        {
+            $_SESSION["notification_message"] = "Nepavyko patvirtinti tapatybės. Įsitikinkite, kad įvedate tą patį telefono numerį, kuris buvo nurodytas kaip siuntėjo arba gavėjo registruojant siuntą.";
+            $_SESSION["notification_status"] = 0;
+        }
+    }
+    else
+    {
+        $_SESSION["notification_message"] = "Nepavyko patvirtinti tapatybės. Įsitikinkite, kad įvedate tą patį telefono numerį, kuris buvo nurodytas kaip siuntėjo arba gavėjo registruojant siuntą.";
+        $_SESSION["notification_status"] = 0;
+    }
+    unset($_POST['confirm_signature_phone']);
 }
 
 if (!$dbc)
@@ -268,7 +308,7 @@ if (!$dbc)
                                 <tr>    
                                     <th scope='col'>Būsena</th>
                                     <th scope='col'>Dydis</th>
-                                    <th scope='col'>Numatyta pristatymo data</th>   
+                                    <th scope='col'>Pristatymo data</th>   
                                     <th scope='col'>Pristatymo adresas</th>
                                     <th scope='col'>Būsenos aprašymas</th>
                                 </tr>
@@ -292,7 +332,46 @@ if (!$dbc)
 
 <br>
 <?php
-    if (isset($_SESSION["recipient_id"]) && isset($_SESSION["package_tracking_id"]) && isset($_SESSION["delivery_method"]) && $_SESSION["delivery_method"] == 1)
+    if (isset($_SESSION["short_status"]) && $_SESSION["short_status"] == "Pristatyta")
+    {
+        echo "<div class='container'>
+                <div class='container'>
+                    <div class='col-12'>
+                        <h1>Siuntos pristatymo patvirtinimo peržiūra</h1>
+                        <hr>
+                    </div>
+                </div>";
+
+        if (isset($_SESSION["show_signature"]) && isset($_SESSION["signature_data"]))
+        {
+            $signature_date = $_SESSION["planned_delivery_date"];
+            echo "<div class='container text-center'>
+                    <div class='col-12'>
+                        <img src='".$_SESSION["signature_data"]."' alt='Pristatymo parašas' style='border: 1px solid black'>
+                    </div>
+                    <p>Parašas išsaugotas $signature_date</p>
+                    <hr>
+                </div></div>";
+            unset($_SESSION["signature_data"]);
+            unset($_SESSION["show_signature"]);
+        }
+        else
+        {
+            echo "<div class='container'>
+                    <div class='col-12'>
+                        <form method='post'>
+                            <div class='mb-3'>
+                                <label for='confirmation_phone' class='form-label'>Įveskite savo telefono numerį, kad patvirtinti tapatybę:</label>
+                                <input type='number' class='form-control' name='confirmation_phone' placeholder='Telefono numeris' required>
+                            </div>
+                            <input type='submit' name='confirm_signature_phone' class='btn btn-primary float-end' value='Rodyti'>
+                        </form>
+                    </div>
+                </div>
+            </div>";
+        }
+    }
+    else if (isset($_SESSION["recipient_id"]) && isset($_SESSION["package_tracking_id"]) && isset($_SESSION["delivery_method"]) && $_SESSION["delivery_method"] == 1)
     {
         echo "<div class='container'>
                 <div class='container'>
@@ -306,7 +385,6 @@ if (!$dbc)
                     <br><br>
                     <label for='delivery_point' class='form-label'>Pasirinkite, į kurį paštomatą norėtumėte peradresuoti:</label>
                     <select class='form-select' id='delivery_point' name='delivery_point' required>";
-                    // Print all post_machines in the same city as the recipient (saved in the clients table)
                     $sql = "SELECT * FROM post_machines WHERE city = (SELECT city FROM clients WHERE id = ".$_SESSION["recipient_id"].")";
                     $result = $dbc->query($sql);
                     while ($row = $result->fetch_assoc())
