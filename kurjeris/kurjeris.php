@@ -61,7 +61,8 @@ if(isset($_POST['select_packages']))
     $packageids=$_POST['selected_packages'];
 	
 for($i=0;$i<$count;$i++){
-    $sql1="UPDATE packages SET courier_id='".$_SESSION['id']."', status='Siunta išvežta pristatymui' WHERE id='" . $packageids[$i] . "'";
+    $date = date('Y-m-d H:i:s', strtotime('+2 hours'));
+    $sql1="UPDATE packages SET courier_id='".$_SESSION['id']."', status='Siunta išvežta pristatymui', planned_delivery_date='$date' WHERE id='" . $packageids[$i] . "'";
     $result1=mysqli_query($dbc, $sql1);
     header('location: kurjeris.php');
     }
@@ -239,7 +240,7 @@ for($i=0;$i<$count;$i++){
     <?php
     if(isset($_SESSION['show_map']))
     {
-        echo "<div class='container' id='map'>
+        echo "<br><div class='container' id='map'>
         <iframe id='iframe' src='https://storage.googleapis.com/maps-solutions-pg19vlu2ft/locator-plus/aoi4/locator-plus.html' width='100%' height='450' style='border:0;' loading='lazy'>
         </iframe>
     </div>";
