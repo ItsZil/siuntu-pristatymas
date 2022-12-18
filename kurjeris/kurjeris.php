@@ -11,8 +11,6 @@ $result=mysqli_query($dbc,$sql);
 
 $count=mysqli_num_rows($result);
 
-
-
 session_start();
 
 # Atsijungimas
@@ -162,9 +160,10 @@ for($i=0;$i<$count;$i++){
     <br>
     <div class="container">
     <div class="container-fluid">
-    <a class='nav-link' href='pristatymo_patvirtinimas.php'>Siuntos pristatymo patvirtinimas</a>
-    <a class='nav-link' href='skundas.php'>Skundo registravimas</a>
-        </div>
+        <a class='btn btn-primary' href='pristatymo_patvirtinimas.php'>Siuntos pristatymo patvirtinimas</a>
+        <a class='btn btn-primary' href='skundas.php'>Skundo registravimas</a>
+    </div>
+    <br>
 
     <form method="post">
     <div class="container">
