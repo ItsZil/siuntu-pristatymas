@@ -6,6 +6,13 @@ $password = "";
 // prisijungimas prie DB
 $dbc=mysqli_connect($server,$user,$password,$db);
 
+$sql="SELECT * FROM packages WHERE courier_id='0'";
+$result=mysqli_query($dbc,$sql);
+
+$count=mysqli_num_rows($result);
+
+
+
 session_start();
 
 # Atsijungimas
@@ -48,6 +55,18 @@ if(isset($_POST["register_milage"]))
     VALUES('$mileage', '$fuel', '$user')";
     mysqli_query($dbc, $query);
     header('Location: kurjeris.php');
+}
+
+if(isset($_POST['select_packages']))
+{
+	$count=count($_POST['selected_packages']);
+    $packageids=$_POST['selected_packages'];
+	
+for($i=0;$i<$count;$i++){
+    $sql1="UPDATE packages SET courier_id='".$_SESSION['id']."', status='Siunta išvežta pristatymui' WHERE id='" . $packageids[$i] . "'";
+    $result1=mysqli_query($dbc, $sql1);
+    header('location: kurjeris.php');
+    }
 }
 ?>
 
@@ -169,34 +188,26 @@ if(isset($_POST["register_milage"]))
             </tr>
             </thead>
             <tbody>
+
+                <?php
+                    while($rows=mysqli_fetch_array($result)){
+                ?>
+
             <tr>
+
                 <td><div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="pasirinkta"></td>
-                <td>31657</td>
-                <td>2022-11-05</td>
-                <td>2022-11-08</td>
-                <td>Vilniaus g. 17, Utena, 34678</td>
-                <td>Nepristatyta</td>
-                <td>M</td>
+                        <input type="checkbox" name="selected_packages[]" class="custom-control-input" id="pasirinkta" value="<?php echo $rows['id']; ?>"></td>
+                <td><?php echo $rows['id']; ?></td>
+                <td><?php echo $rows['planned_delivery_date']; ?></td>
+                <td><?php echo $rows['delivery_date']; ?></td>
+                <td><?php echo $rows['address']; ?></td>
+                <td><?php echo $rows['status']; ?></td>
+                <td><?php echo $rows['weight']; ?></td>
+                <td><?php echo $rows['size']; ?></td>
             </tr>
-            <tr>
-                <td><div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="pasirinkta"></td>
-                <td>31658</td>
-                <td>2022-11-04</td>
-                <td>2022-11-06</td>
-                <td>Šilo g. 25, Anykščiai, 67541</td>
-                <td>Nepristatyta</td>
-                <td>L</td></tr>
-            <tr>
-                <td><div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="pasirinkta"></td>
-                <td>31659</td>
-                <td>2022-11-03</td>
-                <td>2022-11-10</td>
-                <td>Mokyklos g. 5, Molėtai, 49735</td>
-                <td>Užsakyta</td>
-                <td>M</td></tr>
+            <?php
+                        }
+                        ?>
             </tbody>
         </table>
     </div>

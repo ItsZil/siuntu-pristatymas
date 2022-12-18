@@ -21,6 +21,12 @@ while($row = mysqli_fetch_array($resultwarehouses)) {
     array_push($warehouses,$row);
 }
 
+$statusarray = array();
+array_push($statusarray, "<option value='Siuntos duomenys išsaugoti'>Siuntos duomenys išsaugoti</option>");
+array_push($statusarray, "<option value='Siunta atvyko į sandėlį'>Siunta atvyko į sandėlį</option>");
+array_push($statusarray, "<option value='Siunta išvežta pristatymui'>Siunta išvežta pristatymui</option>");
+array_push($statusarray, "<option value='Siunta pristatyta'>Siunta pristatyta</option>");
+
 session_start();
 
 # Atsijungimas
@@ -54,12 +60,14 @@ if (!$dbc)
 if(isset($_POST['submit']))
 {
 	$count=count($_POST['id']);
+    $warehouseid=$_POST['warehouse'];
+    $packagestatus=$_POST['package_status'];
 	
 for($i=0;$i<$count;$i++){
-$sql1="UPDATE packages SET warehouse_id='" . $_POST['warehouse'][$i] . "' WHERE id='" . $_POST['id'][$i] . "'";
-$result1=mysqli_query($dbc, $sql1);
-header('location: siuntu_priskyrimas_sandeliui.php');
-}
+    $sql1="UPDATE packages SET warehouse_id='".$warehouseid[$i]."', status='".$packagestatus[$i]."' WHERE id='" . $_POST['id'][$i] . "'";
+    $result1=mysqli_query($dbc, $sql1);
+    header('location: siuntu_priskyrimas_sandeliui.php');
+    }
 }
 
 
@@ -209,7 +217,20 @@ header('location: siuntu_priskyrimas_sandeliui.php');
                         </td>
 
                         <td>
-                        <?php echo $rows['status']; ?>
+                        <?php 
+                        echo "<select name='package_status[]' id='status' class='form-control' value='Pasirinkite statusą'>";
+                        echo '<option value="'.$rows['status'].'">'.$rows['status'].'</option>';
+                        $currentstatus=$rows['status'];
+
+                        for($i=0;$i<4;$i++)
+                        {
+                            if(!str_contains($statusarray[$i], $currentstatus))
+                            {
+                                echo $statusarray[$i];
+                            }
+                        }
+                        echo "</select>";
+                        ?>
                         </td>
 
                         <td>
