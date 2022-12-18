@@ -160,7 +160,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <td>".$row['area']."</td>
                     <td>".$row['shelves']."</td>
                     <td><a class='btn btn-primary me-1' href='redaguoti_sandeli.php?id=".$row['id']."'>Redaguoti</a>
-                    <button class='btn btn-primary ms-3'>Ištrinti</button></td>
+                    <a class='btn btn-primary ms-3' href='istrinti_sandeli.php?id=".$row['id']."'>Ištrinti</a></td>
                 </tr>";
             }
             ?>
@@ -170,7 +170,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <form method="post">
+                <form method="post" name="filtering">
             <label for="selection">Nurodyti miestą:</label>
             <?php
             $sql="SELECT DISTINCT city FROM warehouses";
