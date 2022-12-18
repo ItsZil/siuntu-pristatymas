@@ -34,6 +34,45 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+$topic=$topic_err="";
+$complaint=$complaint_err="";
+$courier_id=$_SESSION["id"];
+
+$sql="SELECT id FROM packages WHERE courier_id=$courier_id";
+$result=mysqli_query($dbc, $sql);
+if(mysqli_num_rows($result)<1){
+    header("location:kurjeris.php");
+}
+
+if($_SERVER["REQUEST_METHOD"]=="POST") {
+    $package_id=$_POST['selection'];
+    if (empty($_POST['topic'])) {
+        $topic_err = "Įveskite temą";
+    } else {
+        $topic = trim($_POST['topic']);
+    }
+    if (empty($_POST['complaint'])) {
+        $complaint_err = "Įveskite nusiskundimą";
+    } else {
+        $complaint = trim($_POST['complaint']);
+    }
+    if (empty($topic_err) && empty($complaint_err)) {
+        $sql = "INSERT INTO complaints (topic, complaint, package_id, courier_id) VALUES (?, ?, ?, ?)";
+        if ($stmt = mysqli_prepare($dbc, $sql)) {
+            mysqli_stmt_bind_param($stmt, "ssii", $param_topic, $param_complaint, $param_package, $param_courier);
+            $param_topic = $topic;
+            $param_complaint = $complaint;
+            $param_package = $package_id;
+            $param_courier = $courier_id;
+            if (mysqli_stmt_execute($stmt)) {
+                $message = "Skundas užregistruotas";
+            } else {
+                $message = "Įvyko klaida, bandykite dar kartą";
+            }
+        }
+    }
+}
 ?>
 
 <!doctype html>
@@ -136,12 +175,21 @@ if (!$dbc)
                         <label for="topic" class="form-label">Tema</label>
                         <input type="text" class="form-control" id="topic" name="topic" maxlength="50" required>
                         <br>
-                        <label for="klausimas" class="form-label">Skundas:</label>
-                        <textarea class="form-control" id="skundas" name="skundas" rows="3" required></textarea>
+                        <label for="complaint" class="form-label">Skundas:</label>
+                        <textarea class="form-control" id="complaint" name="complaint" rows="3" required></textarea>
+                        <label for="selection">Siunta:</label>
+                        <?php
+                        echo "<select name='selection'>";
+                        while ($row=mysqli_fetch_assoc($result)){
+                            $package=$row['id'];
+                            echo "<option value='$package'>$package</option>";
+                        }
+                        echo "</select>";?>
                     </div>
                     <button type="submit" class="btn btn-primary float-end">Registruoti skundą</button>
                 </form>
             </div>
+            <?php if(!empty($message)) echo "<p>$message</p>"?>
         </div>
     </div>
     <?php
