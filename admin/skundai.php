@@ -135,7 +135,7 @@ if (!$dbc)
                     echo
                     "<tr>
                         <td>".$row['topic']."</td>
-                        <td>".$row['complaint']."</td>
+                        <td style='max-width: 500px'>".$row['complaint']."</td>
                         <td>
                             <a class='btn btn-primary me-1' href='perziureti_skunda.php?id=$id'>Peržiūrėti</a>
                             <a class='btn btn-primary ms-3' href='istrinti_skunda.php?id=$id'>Ištrinti</a>
