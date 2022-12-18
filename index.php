@@ -34,7 +34,7 @@ else
 # Siuntos sekimas
 if (isset($_POST["track_package"]))
 {
-    $_SESSION['package_tracking_number'] = $_POST["package_tracking_number"];
+    $_SESSION['package_tracking_id'] = $_POST["package_tracking_id"];
 
     header('Location: sekimas.php');
 }
@@ -42,8 +42,8 @@ if (isset($_POST["track_package"]))
 # Siuntos registravimas
 if (isset($_POST["register_package"]))
 {
-    $package_weight = $_POST["package_weight"];
-    $package_size = $_POST["package_size"];
+    $_SESSION["package_weight"] = $_POST["package_weight"];
+    $_SESSION["package_size"] = $_POST["package_size"];
 
     header('Location: siuntos_registravimas.php');
 }
@@ -99,7 +99,7 @@ if (!$dbc)
                 if ($_SESSION["access_level"] == 3) # Administratorius
                 {
                     echo "<li class='nav-item'>
-                    <a class='nav-link active' href='admin/administratorius.php'>Administratorius</a>
+                    <a class='nav-link' href='admin/administratorius.php'>Administratorius</a>
                     </li>";
 
                 }
@@ -169,8 +169,8 @@ if (!$dbc)
                             <!-- Package tracking form -->
                             <form method="post">
                                 <div class="mb-3">
-                                    <label for="package_tracking_number" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
-                                    <input type="number" class="form-control" name="package_tracking_number" placeholder="Siuntos numeris" required>
+                                    <label for="package_tracking_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
+                                    <input type="number" class="form-control" name="package_tracking_id" placeholder="Siuntos numeris" required>
                                 </div>
                                 <br><br>
                                 <input type='submit' name='track_package' class='btn btn-primary float-end' value='Sekti'>
@@ -191,7 +191,7 @@ if (!$dbc)
                                     <input type="number" class="form-control" name="package_weight"  min="0" step="0.1" placeholder="Svoris (kg)" required>
                                     <br>
                                     <label for="package_size">Siuntos dydis:</label>
-                                    <select class="form-control" name="siuntos_dydis">
+                                    <select class="form-control" name="package_size">
                                         <option>XS</option>
                                         <option>S</option>
                                         <option>M</option>

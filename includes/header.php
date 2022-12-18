@@ -11,6 +11,7 @@
     function getHeader(string $title = "Untitled", array $addons = []): string
 	{
 		global $CSS_ADDONS;
+        $GOOGLE_MAPS_API_KEY = getenv("GOOGLE_MAPS_API_KEY");
 		$header = <<<HTML
         <head>
             <meta charset="utf-8">
@@ -33,6 +34,9 @@
             <script src="https://kit.fontawesome.com/d3e1e2eb6a.js" crossorigin="anonymous"></script>
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+            
+            <!-- Replace YOUR_API_KEY with the GOOGLE_MAPS_API_KEY env variable -->
+            <script src="https://maps.googleapis.com/maps/api/js?key={$GOOGLE_MAPS_API_KEY}"></script>
         HTML;
 
 		// For every addon in the addons array, get all the links from $CSS_ADDONS and append to header.
