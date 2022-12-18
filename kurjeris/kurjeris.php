@@ -46,13 +46,13 @@ if (!$dbc)
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
 
-if(isset($_POST["register_milage"]))
+if(isset($_POST["mileage"]))
 {
-    $mileage = mysqli_real_escape_string($dbc, $_POST["milage"]);
+    $mileage = mysqli_real_escape_string($dbc, $_POST["mileage"]);
     $fuel = mysqli_real_escape_string($dbc, $_POST["fuel"]);
-    $user = mysqli_real_escape_string($dbc, $_SESSION["username"]);
-    $query = "INSERT INTO daily_milage (milage, fuel_used, courier_username) 
-    VALUES('$mileage', '$fuel', '$user')";
+    $id = mysqli_real_escape_string($dbc, $_SESSION["id"]);
+    $query = "INSERT INTO daily_mileage (mileage, fuel_used, courier_id) 
+    VALUES('$mileage', '$fuel', '$id')";
     mysqli_query($dbc, $query);
     header('Location: kurjeris.php');
 }
@@ -182,7 +182,8 @@ for($i=0;$i<$count;$i++){
                 <th>Siuntos kodas</th>
                 <th>Išsiuntimo data</th>
                 <th>Pristatymo data</th>
-                <th>Pristatymo adresas</th>
+                <th>Siuntėjo adresas</th>
+                <th>Gavėjo adresas</th>
                 <th>Statusas</th>
                 <th>Dydis</th>
             </tr>
@@ -200,7 +201,8 @@ for($i=0;$i<$count;$i++){
                 <td><?php echo $rows['id']; ?></td>
                 <td><?php echo $rows['planned_delivery_date']; ?></td>
                 <td><?php echo $rows['delivery_date']; ?></td>
-                <td><?php echo $rows['address']; ?></td>
+                <td><?php echo $rows['from_address']; ?></td>
+                <td><?php echo $rows['to_address']; ?></td>
                 <td><?php echo $rows['status']; ?></td>
                 <td><?php echo $rows['weight']; ?></td>
                 <td><?php echo $rows['size']; ?></td>
@@ -226,13 +228,13 @@ for($i=0;$i<$count;$i++){
             <div class="col-12">
                 <form method="post">
                     <div class="mb-3">
-                        <label for="milage" class="form-label">Rida</label>
-                        <input type="text" class="form-control" id="milage" name="milage" required>
+                        <label for="mileage" class="form-label">Rida</label>
+                        <input type="text" class="form-control" id="mileage" name="mileage" required>
                         <br>
                         <label for="fuel" class="form-label">Kuro sanaudos</label>
                         <input type="text" class="form-control" id="fuel" name="fuel" required>
                     </div>
-                    <input type='submit' name='register_milage' class='btn btn-primary float-end' value="Pateikti">
+                    <input type='submit' name='mileage' class='btn btn-primary float-end' value="Pateikti">
                 </form>
             </div>
         </div>

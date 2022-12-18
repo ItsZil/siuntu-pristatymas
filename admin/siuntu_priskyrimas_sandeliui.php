@@ -60,7 +60,7 @@ if (!$dbc)
 if(isset($_POST['submit']))
 {
 	$count=count($_POST['id']);
-    $courierid=$_POST['courier'];
+    $warehouseid=$_POST['warehouse'];
     $packagestatus=$_POST['package_status'];
 	
 for($i=0;$i<$count;$i++){
@@ -163,7 +163,8 @@ for($i=0;$i<$count;$i++){
                         <th>Siuntos ID</th>
                         <th>Išsiuntimo data</th>
                         <th>Pristatymo data</th>
-                        <th>Pristatymo adresas</th>
+                        <th>Siuntėjo adresas</th>
+                        <th>Gavėjo adresas</th>
                         <th>Statusas</th>
                         <th>Dydis</th>
                     </tr>
@@ -212,9 +213,10 @@ for($i=0;$i<$count;$i++){
                         <?php echo $rows['delivery_date']; ?>
                         </td>
 
-                        <td>
-                        <?php echo $rows['address'] ?>
-                        </td>
+
+                        <td><?php echo $rows['from_address']; ?></td>
+
+                        <td><?php echo $rows['to_address']; ?></td>
 
                         <td>
                         <?php 

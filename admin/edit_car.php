@@ -292,7 +292,7 @@ if(isset($_POST['update_car']))
                         ?> 
                         <br>
                         <label for="registration_date" class="form-label">Registracijos data</label>
-                        <input type='datetime-local' class='form-control' id='registration_date' name='registration_date' value='<?php echo $date; ?>' maxlength='50' required>
+                        <input type='date' class='form-control' id='registration_date' name='registration_date' value='<?php echo $date; ?>' maxlength='50' required>
                         
                         <br>
                         <label for="value" class="form-label">Vertė</label>
