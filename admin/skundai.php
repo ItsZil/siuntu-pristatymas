@@ -126,30 +126,24 @@ if (!$dbc)
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Skundas1</td>
-                <td>Skundo tekstas</td>
-                <td>
-                    <button class="btn btn-primary me-1">Atsakyti</button>
-                    <button class="btn btn-primary ms-3">Ištrinti</button>
-                </td>
-            </tr
-            <tr>
-                <td>Skundas1</td>
-                <td>Skundo tekstas</td>
-                <td>
-                    <button class="btn btn-primary me-1">Atsakyti</button>
-                    <button class="btn btn-primary ms-3">Ištrinti</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Skundas1</td>
-                <td>Skundo tekstas</td>
-                <td>
-                    <button class="btn btn-primary me-1">Atsakyti</button>
-                    <button class="btn btn-primary ms-3">Ištrinti</button>
-                </td>
-            </tr>
+            <?php
+            $sql="SELECT * FROM complaints";
+            $result=mysqli_query($dbc, $sql);
+            if(mysqli_num_rows($result)>0){
+                while ($row=mysqli_fetch_assoc($result)){
+                    $id=$row['id'];
+                    echo
+                    "<tr>
+                        <td>".$row['topic']."</td>
+                        <td>".$row['complaint']."</td>
+                        <td>
+                            <a class='btn btn-primary me-1' href='perziureti_skunda.php?id=$id'>Peržiūrėti</a>
+                            <a class='btn btn-primary ms-3' href='istrinti_skunda.php?id=$id'>Ištrinti</a>
+                        </td>
+                    </tr>";
+                }
+            }
+            ?>
             </tbody>
         </table>
     </div>
