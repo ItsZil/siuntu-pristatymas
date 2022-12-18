@@ -41,7 +41,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "../includes/header.php";
-        echo getHeader("Sandėliai");
+        echo getHeader("Administratorius");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -110,15 +110,17 @@ if (!$dbc)
         </div>
     </nav>
     <br>
-    <div class="container-fluid">
-    <a class='nav-link' href='uzklausos.php'>Užklausos</a>
-    <a class='nav-link' href='skundai.php'>Skundai</a>
-    <a class='nav-link' href='kurjeriai.php'>Kurjeriai</a>
-    <a class='nav-link' href='auto_priskyrimas.php'>Auto priskyrimas</a>
-    <a class='nav-link' href='siuntu_priskyrimas_kurjeriui.php'>Siuntų priskyrimas kurjeriui</a>
-    <a class='nav-link' href='siuntu_priskyrimas_sandeliui.php'>Siuntų priskyrimas sandėliui</a>
-    <a class='nav-link' aria-current='page'  href='sandeliai.php'>Sandėliai</a>
+    <div class="container text-center">
+        <div class="row gap-3">
+            <a class='btn btn-primary' href='uzklausos.php'>Užklausos</a>
+            <a class='btn btn-primary' href='skundai.php'>Skundai</a>
+            <a class='btn btn-primary' href='kurjeriai.php'>Kurjeriai</a>
+            <a class='btn btn-primary' href='auto_priskyrimas.php'>Auto priskyrimas</a>
+            <a class='btn btn-primary' href='siuntu_priskyrimas_kurjeriui.php'>Siuntų priskyrimas kurjeriui</a>
+            <a class='btn btn-primary' href='siuntu_priskyrimas_sandeliui.php'>Siuntų priskyrimas sandėliui</a>
+            <a class='btn btn-primary' href='sandeliai.php'>Sandėliai</a>
         </div>
+    </div>
 
     
     <?php
