@@ -108,6 +108,7 @@ if (isset($_POST["calculate_price"]))
     $data = json_decode($json, TRUE);
     $distance = $data['rows'][0]['elements'][0]['distance']['value'] / 1000; // Distance in km
 
+    $delivery_days = 1;
     if ($distance < 20)
     {
         $package_price += 1;
@@ -119,10 +120,12 @@ if (isset($_POST["calculate_price"]))
     else if ($distance < 500)
     {
         $package_price += 3;
+        $delivery_days += 1;
     }
     else
     {
         $package_price += 9;
+        $delivery_days += 2;
     }
 
     $_SESSION["package_price"] = $package_price;
@@ -154,7 +157,9 @@ if (isset($_POST["calculate_price"]))
         $_SESSION["pick_up_point"] = $_POST["pick_up_point"];
         $_SESSION["delivery_point"] = $_POST["delivery_point"];
     }
+    $_SESSION["delivery_days"] = $delivery_days;
 
+    unset($_POST["calculate_price"]);
     header('Location: siuntos_registravimas.php');
 }
 
@@ -241,8 +246,16 @@ if (isset($_POST["register_package"]))
     $recipient_result = mysqli_query($dbc, $recipient_query);
     $recipient_id = mysqli_fetch_assoc($recipient_result)["id"];
 
-    // Insert the package into the database
-    $package_query = "INSERT INTO packages (sender_id, recipient_id, from_address, to_address, delivery_method, price, weight, size) VALUES ('$sender_id', '$recipient_id', '$from_address', '$to_address', '$delivery_method', '$package_price', '$package_weight', '$package_size')";
+    // Insert the package into the database, for delivery_date use DATETIME
+    $delivery_date = date("Y-m-d H:i:s");
+    if (isset($_SESSION["delivery_days"]))
+    {
+        $delivery_days = $_SESSION["delivery_days"];
+        $delivery_date = date('Y-m-d', strtotime("+$delivery_days days"));
+    }
+    $delivery_date = $delivery_date . " 12:00:00";
+
+    $package_query = "INSERT INTO packages (sender_id, recipient_id, from_address, to_address, delivery_method, planned_delivery_date, price, weight, size) VALUES ('$sender_id', '$recipient_id', '$from_address', '$to_address', '$delivery_method', '$delivery_date', '$package_price', '$package_weight', '$package_size')";
     mysqli_query($dbc, $package_query);
 
     if (mysqli_affected_rows($dbc) == 1)
@@ -256,6 +269,9 @@ if (isset($_POST["register_package"]))
         $_SESSION["notification_status"] = 0;
     }
 
+    unset($_POST["register_package"]);
+
+    unset($_SESSION["delivery_days"]);
     unset($_SESSION["package_price"]);
     unset($_SESSION["package_weight"]);
     unset($_SESSION["package_size"]);

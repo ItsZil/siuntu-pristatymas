@@ -34,7 +34,7 @@ else
 # Siuntos sekimas
 if (isset($_POST["track_package"]))
 {
-    $_SESSION['package_tracking_number'] = $_POST["package_tracking_number"];
+    $_SESSION['package_tracking_id'] = $_POST["package_tracking_id"];
 
     header('Location: sekimas.php');
 }
@@ -169,8 +169,8 @@ if (!$dbc)
                             <!-- Package tracking form -->
                             <form method="post">
                                 <div class="mb-3">
-                                    <label for="package_tracking_number" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
-                                    <input type="number" class="form-control" name="package_tracking_number" placeholder="Siuntos numeris" required>
+                                    <label for="package_tracking_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
+                                    <input type="number" class="form-control" name="package_tracking_id" placeholder="Siuntos numeris" required>
                                 </div>
                                 <br><br>
                                 <input type='submit' name='track_package' class='btn btn-primary float-end' value='Sekti'>

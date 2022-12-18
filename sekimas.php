@@ -32,12 +32,55 @@ else
 
 if (isset($_POST["track_package"]))
 {
-    $package_tracking_number = $_POST['package_tracking_number'];
-    $package_id = 0;
+    $package_tracking_id = $_POST['package_tracking_id'];
+    $_SESSION['package_tracking_id'] = $package_tracking_id;
 
-    $_SESSION['package_tracking_number'] = $package_tracking_number;
-    $_SESSION['package_id'] = $package_id;
+    // Check if the package exists
+    $sql = "SELECT * FROM packages WHERE id = '$package_tracking_id'";
+    $result = mysqli_query($dbc, $sql);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $count = mysqli_num_rows($result);
 
+    if ($count == 1)
+    {
+        $from_address = $row['from_address'];
+        $to_address = $row['to_address'];
+        $planned_delivery_date = $row['planned_delivery_date'];
+        $size = $row['size'];
+        $long_status = $row['status'];
+
+        $short_status = "Užregistruota";
+        if ($long_status == "Siunta atvyko į sandelį")
+        {
+            $short_status = "Rūšiuojama";
+        }
+        else if ($long_status == "Siunta išvežta pristatymui")
+        {
+            $short_status = "Išvežta pristatymui";
+        }
+        else if ($long_status == "Siunta pristatyta")
+        {
+            $short_status = "Pristatyta";
+        }
+        else
+        {
+            $short_status == $long_status;
+        }
+
+        $_SESSION['from_address'] = $from_address;
+        $_SESSION['to_address'] = $to_address;
+        $_SESSION['planned_delivery_date'] = $planned_delivery_date;
+        $_SESSION['size'] = $size;
+        $_SESSION['long_status'] = $long_status;
+        $_SESSION['short_status'] = $short_status;
+    }
+    else
+    {
+        $_SESSION["notification_message"] = "Siunta $package_tracking_id nerasta. Įsitikinkite, kad įvedate teisingą siuntos numerį.";
+        $_SESSION["notification_status"] = 0;
+
+        unset($_SESSION['package_tracking_id']);
+    }
     unset($_POST['track_package']);
     header('Location: sekimas.php');
 }
@@ -130,20 +173,29 @@ if (!$dbc)
     </div>
     <div class="container">
         <div class="col-12">
+            <?php
+                // Show the notification message from session
+                if (isset($_SESSION["notification_message"]))
+                {
+                    //die($_SESSION["notification_status"]);
+                    $message = $_SESSION["notification_message"];
+                    if ($_SESSION["notification_status"] == 1)
+                    {
+                        echo "<div class='alert alert-success' role='alert'>$message</div>";
+                    }
+                    else
+                    {
+                        echo "<div class='alert alert-danger' role='alert'>$message</div>";
+                    }
+                    unset($_SESSION["notification_message"]);
+                    unset($_SESSION["notification_status"]);
+                }
+            ?>
+
             <form method="post">
                 <div class="mb-3">
-                    <label for="package_tracking_number" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
-                    <?php
-                        if (isset($_SESSION["package_tracking_number"]))
-                        {
-                            $package_tracking_number = $_SESSION["package_tracking_number"];
-                            echo "<input type='number' class='form-control' name='package_tracking_number'  placeholder='Siuntos numeris' value='$package_tracking_number' required>";
-                        }
-                        else
-                        {
-                            echo "<input type='number' class='form-control' name='package_tracking_number'  placeholder='Siuntos numeris' required>";
-                        }
-                    ?>
+                    <label for="package_tracking_id" class="form-label">Įveskite siuntos numerį, kurią norite sekti ar valdyti:</label>
+                    <input type='number' class='form-control' name='package_tracking_id'  placeholder='Siuntos numeris'  value="<?php if (isset($_SESSION["package_tracking_id"])) echo $_SESSION["package_tracking_id"]; else echo null ?>" required>
                 </div>
                 <input type='submit' name='track_package' class='btn btn-primary float-end' value="Sekti">
             </form>
@@ -152,7 +204,7 @@ if (!$dbc)
 </div>
 
 <?php
-    if (isset($_SESSION["package_id"]))
+    if (isset($_SESSION["short_status"]))
     {
         echo "<div class='container'>
                 <div class='container'>
@@ -168,18 +220,16 @@ if (!$dbc)
                                 <tr>
                                     <th scope='col'>Siuntos būsena</th>
                                     <th scope='col'>Siuntos dydis</th>
-                                    <th scope='col'>Siuntos išsiuntimo data</th>
-                                    <th scope='col'>Siuntos pristatymo data</th>
+                                    <th scope='col'>Numatyta pristatymo data</th>
                                     <th scope='col'>Siuntos būsenos aprašymas</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Rūšiuojama</td>
-                                    <td>XS</td>
-                                    <td>2022-11-07</td>
-                                    <td>2022-11-08</td>
-                                    <td>Siunta atvyko į rūšiavimo skyrių.</td>
+                                    <td>".$_SESSION["short_status"]."</td>
+                                    <td>".$_SESSION["size"]."</td>
+                                    <td>".$_SESSION["planned_delivery_date"]."</td>
+                                    <td>".$_SESSION["long_status"]."</td>
                                 </tr>
                             </tbody>
                         </table>
