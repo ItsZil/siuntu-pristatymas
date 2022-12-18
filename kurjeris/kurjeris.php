@@ -182,7 +182,8 @@ for($i=0;$i<$count;$i++){
                 <th>Siuntos kodas</th>
                 <th>Išsiuntimo data</th>
                 <th>Pristatymo data</th>
-                <th>Pristatymo adresas</th>
+                <th>Siuntėjo adresas</th>
+                <th>Gavėjo adresas</th>
                 <th>Statusas</th>
                 <th>Dydis</th>
             </tr>
@@ -200,7 +201,8 @@ for($i=0;$i<$count;$i++){
                 <td><?php echo $rows['id']; ?></td>
                 <td><?php echo $rows['planned_delivery_date']; ?></td>
                 <td><?php echo $rows['delivery_date']; ?></td>
-                <td><?php echo $rows['address']; ?></td>
+                <td><?php echo $rows['from_address']; ?></td>
+                <td><?php echo $rows['to_address']; ?></td>
                 <td><?php echo $rows['status']; ?></td>
                 <td><?php echo $rows['weight']; ?></td>
                 <td><?php echo $rows['size']; ?></td>

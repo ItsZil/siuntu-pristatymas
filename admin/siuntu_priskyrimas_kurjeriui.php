@@ -151,7 +151,8 @@ header('location: siuntu_priskyrimas_kurjeriui.php');
                         <th>Siuntos kodas</th>
                         <th>Išsiuntimo data</th>
                         <th>Pristatymo data</th>
-                        <th>Pristatymo adresas</th>
+                        <th>Siuntėjo adresas</th>
+                        <th>Gavėjo adresas</th>
                         <th>Statusas</th>
                         <th>Dydis</th>
                     </tr>
@@ -198,9 +199,9 @@ header('location: siuntu_priskyrimas_kurjeriui.php');
                         <?php echo $rows['delivery_date']; ?>
                         </td>
 
-                        <td>
-                        <?php echo $rows['address'] ?>
-                        </td>
+                        <td><?php echo $rows['from_address']; ?></td>
+
+                        <td><?php echo $rows['to_address']; ?></td>
 
                         <td>
                         <?php echo $rows['status']; ?>
