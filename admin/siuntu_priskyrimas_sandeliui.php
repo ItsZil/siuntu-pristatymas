@@ -60,7 +60,7 @@ if (!$dbc)
 if(isset($_POST['submit']))
 {
 	$count=count($_POST['id']);
-    $warehouseid=$_POST['warehouse'];
+    $courierid=$_POST['courier'];
     $packagestatus=$_POST['package_status'];
 	
 for($i=0;$i<$count;$i++){
@@ -245,7 +245,7 @@ for($i=0;$i<$count;$i++){
 
                     </tbody>
                 </table>
-                <input id='button' type='submit' name='submit' class='btn btn-primary float-end' value="Išsaugoti"">
+                <input id='button' type='submit' name='submit' class='btn btn-primary float-end' value="Išsaugoti">
             </div>
         </form>
     <?php

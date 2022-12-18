@@ -5,7 +5,22 @@ $user = "root";
 $password = "";
 // prisijungimas prie DB
 $dbc=mysqli_connect($server,$user,$password,$db);
+$sql="SELECT * FROM cars";
+$result=mysqli_query($dbc,$sql);
+unset($_SESSION['selected_id']);
+/* Count table rows */
+$count=mysqli_num_rows($result);
 
+$couriers = array();
+$query = "SELECT * FROM users WHERE access_level='2'";
+
+$resultcouriers=mysqli_query($dbc,$query);
+
+$couriercount = mysqli_num_rows($resultcouriers);
+while($row = mysqli_fetch_array($resultcouriers)) {
+    array_push($couriers,$row);
+}
+$rowid= array();
 session_start();
 
 # Atsijungimas
@@ -34,6 +49,34 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+if(isset($_POST['delete_city']))
+{
+	
+
+$sql1="DELETE FROM cars WHERE id='" . $_POST['selected_id'] . "'";
+$result1=mysqli_query($dbc, $sql1);
+header('location: auto_priskyrimas.php');
+
+}
+
+if(isset($_POST['assign_car']))
+{
+	$count=count($_POST['id']);
+    $courierid=$_POST['courier'];
+	
+for($i=0;$i<$count;$i++){
+    $sql1="UPDATE cars SET courier_id='".$courierid[$i]."'WHERE id='" . $_POST['id'][$i] . "'";
+    $result1=mysqli_query($dbc, $sql1);
+    header('location: auto_priskyrimas.php');
+    }
+}
+if(isset($_POST['edit_car']))
+{
+    header('location: edit_car.php');
+}
+
+
 ?>
 
 <!doctype html>
@@ -107,13 +150,14 @@ if (!$dbc)
                         </form>";
                   }
         ?>
-        </div>
+            </div>
+                
     </nav>
     <br>
     <div class="container">
         <div class="container">
             <div class="col-12">
-                <h1>Automobilio priskyrimas kurjeriui</h1>
+                <h1>Automobiliai</h1>
                 <hr>
             </div>
         </div>
@@ -122,6 +166,7 @@ if (!$dbc)
             <thead>
             <tr>
                 <th>Modelis</th>
+                <th>Rida</th>
                 <th>Būsena</th>
                 <th>Bagažo dydis</th>
                 <th>Kurjeris</th>
@@ -129,51 +174,48 @@ if (!$dbc)
             </tr>
             </thead>
             <tbody>
+            <?php
+                while($rows=mysqli_fetch_array($result)){
+                    $id = $rows["id"];
+            ?>
             <tr>
-                <td>Mercedes</td>
-                <td>Laisvas</td>
-                <td>L4 H3</td>
-                <td>
-                    <select class="form-select" id="courier" name="Kurjeris" required>
-                        <option>Kurjeris1</option>
-                        <option>Kurjeris2</option>
-                        <option>Kurjeris3</option>
-                    </select>
-                </td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr
-            <tr>
-                <td>Mercedes</td>
-                <td>Laisvas</td>
-                <td>L2 H2</td>
-                <td>
-                    <select class="form-select" id="courier" name="Kurjeris" required>
-                        <option>Kurjeris1</option>
-                        <option>Kurjeris2</option>
-                        <option>Kurjeris3</option>
-                    </select>
-                </td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
+                <td><?php echo implode(' ',array($rows['mark'], $rows['model'])); 
+                echo "<input type='hidden' name='id[]' value=".$rows['id']." />";
+                ?></td>
+                <td><?php echo $rows['mileage']; ?></td>
+                <td><?php echo $rows['car_status']; ?></td>
+                <td><?php echo $rows['baggage_type']; ?></td>
+                <td><?php
+                //need to fix it so it would show courier name instead of courier id in the table
+                if($rows['courier_id'] > 0){
+                    for($j=0;$j<$couriercount;$j++){
+                        if($rows['courier_id'] == $couriers[$j]['id']){
+                        echo $couriers[$j]['name'];
+                        }
+                        }
+                    }?></td>
+                
+                <?php echo '<td><form method="post" action="edit_car.php">
+                  <input type="submit" name="edit_car" class="btn btn-primary float-end" value="Redaguoti"/>';
+                  echo "<input type='hidden' name='selected_id' value='$id' /></form></td>";
+                echo '
+                <td><form method="post">
+                  <input type="submit" name="delete_city" class="btn btn-primary" value="Pašalinti"/>';
+                  echo "<input type='hidden' name='selected_id' value='$id' />";
+                echo '</form></td>';?>
+            
 
-            </tr>
-            <tr>
-                <td>Mercedes</td>
-                <td>Laisvas</td>
-                <td>L1 H2</td>
-                <td>
-                    <select class="form-select" id="courier" name="Kurjeris" required>
-                        <option>Kurjeris1</option>
-                        <option>Kurjeris2</option>
-                        <option>Kurjeris3</option>
-                    </select>
-                </td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
 
-            </tr>
+            
+
+            <?php
+                }
+            ?>
             </tbody>
         </table>
-        <input id='button' type='submit' name='submit_changes' class='btn btn-primary float-end' value="Išsaugoti"">
     </div>
+
+
     <?php
         include_once "../includes/footer.html";
     ?>
