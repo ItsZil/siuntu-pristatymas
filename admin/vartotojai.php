@@ -34,6 +34,11 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+$selectedCity="";
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    $selectedCity=$_POST['selection'];
+}
 ?>
 
 <!doctype html>
@@ -41,7 +46,7 @@ if (!$dbc)
 <head>
     <?php
         include_once "../includes/header.php";
-        echo getHeader("Kurjeriai");
+        echo getHeader("Sandėliai");
     ?>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -113,53 +118,44 @@ if (!$dbc)
     <div class="container">
         <div class="container">
             <div class="col-12">
-                <h1>Kurjerių sąrašas</h1>
+                <h1>Vartotojų sąrašas</h1>
                 <hr>
             </div>
         </div>
 
-        <div class="container">
-                <form>
-                    <a class='btn btn-primary me-1' href='kurjerio_pridejimas.php'>Pridėti kurjerį</a>
-                </form>
-            </div>
-
         <table class='table table-striped'>
             <thead>
             <tr>
+                <th>Slapyvardis</th>
                 <th>Vardas</th>
                 <th>Pavardė</th>
-                <th>Telefono numeris</th>
-                <th>Veiksmai</th>
+                <th>Telefonas</th>
+                <th>El. Paštas</th>
+                <th>Lygis</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Kurjeris1</td>
-                <td>Kurjeris1</td>
-                <td>+37068724675</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-            </tr
-            <tr>
-                <td>Kurjeris2</td>
-                <td>Kurjeris2</td>
-                <td>+37068724675</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
+            <?php
+            $sql = "SELECT * FROM users";
+            $result=mysqli_query($dbc, $sql);
 
-            </tr>
-            <tr>
-                <td>Kurjeris3</td>
-                <td>Kurjeris3</td>
-                <td>+37068724675</td>
-                <td><button class="btn btn-primary me-1">Redaguoti</button><button class="btn btn-primary ms-3">Ištrinti</button></td>
-
-            </tr>
+            while($row=mysqli_fetch_assoc($result)){
+                echo
+                "<tr>
+                    <td>".$row['username']."</td>
+                    <td>".$row['name']."</td>
+                    <td>".$row['surname']."</td>
+                    <td>".$row['phone']."</td>
+                    <td>".$row['email']."</td>
+                    <td>".$row['title']." - ".$row['access_level']."</td>
+                    <td><a class='btn btn-primary me-1' href='redaguoti_vartotoja.php?id=".$row['id']."'>Redaguoti</a>
+                    <a class='btn btn-primary ms-3' href='istrinti_vartotoja.php?id=".$row['id']."'>Ištrinti</a></td>
+                </tr>";
+            }
+            ?>
             </tbody>
         </table>
     </div>
-
-
-
     <?php
         include_once "../includes/footer.html";
     ?>

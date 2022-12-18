@@ -112,9 +112,9 @@ if (!$dbc)
     <br>
     <div class="container text-center">
         <div class="row gap-3">
+            <a class='btn btn-primary' href='vartotojai.php'>Vartotojai</a>
             <a class='btn btn-primary' href='uzklausos.php'>Užklausos</a>
             <a class='btn btn-primary' href='skundai.php'>Skundai</a>
-            <a class='btn btn-primary' href='kurjeriai.php'>Kurjeriai</a>
             <a class='btn btn-primary' href='auto_priskyrimas.php'>Auto priskyrimas</a>
             <a class='btn btn-primary' href='siuntu_priskyrimas_kurjeriui.php'>Siuntų priskyrimas kurjeriui</a>
             <a class='btn btn-primary' href='siuntu_priskyrimas_sandeliui.php'>Siuntų priskyrimas sandėliui</a>
