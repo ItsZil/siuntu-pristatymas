@@ -36,6 +36,7 @@ if (!$dbc)
 }
 
 $name=$name_err="";
+$city=$city_err="";
 $address=$address_err="";
 $phone=$phone_err="";
 $email=$email_err="";
@@ -47,6 +48,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         $name_err="Įveskite pavadinimą";
     } else{
         $name=trim($_POST['name']);
+    }
+    if(empty($_POST["city"])){
+        $city_err="Įveskite miestą";
+    } else{
+        $city=trim($_POST['city']);
     }
     if(empty($_POST["address"])){
         $address_err="Įveskite adresą";
@@ -73,11 +79,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     } else{
         $shelves=trim($_POST['shelves']);
     }
-    if(empty($name_err) && empty($address_err) && empty($phone_err) && empty($email_err) && empty($area_err) && empty($shelves_err)){
-        $sql="INSERT INTO warehouses (name, address, phone, email, area, shelves) VALUES (?, ?, ?, ?, ?, ?)";
+    if(empty($name_err) && empty($city_err) && empty($address_err) && empty($phone_err) && empty($email_err) && empty($area_err) && empty($shelves_err)){
+        $sql="INSERT INTO warehouses (name, city, address, phone, email, area, shelves) VALUES (?, ?, ?, ?, ?, ?, ?)";
         if($stmt=mysqli_prepare($dbc, $sql)){
-            mysqli_stmt_bind_param($stmt, "ssssii", $param_name, $param_address, $param_phone, $param_email, $param_area, $param_shelves);
+            mysqli_stmt_bind_param($stmt, "sssssii", $param_name, $param_city, $param_address, $param_phone, $param_email, $param_area, $param_shelves);
             $param_name=$name;
+            $param_city=$city;
             $param_address=$address;
             $param_phone=$phone;
             $param_email=$email;
@@ -175,6 +182,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <label for="name">Sandėlio pavadinimas</label>
                     <input type="text" class="form-control" name="name" placeholder="Pavadinimas" maxlength="50" required>
                 </div>
+
+            <!-- Miestas -->
+            <div class="form-group col-sm-12">
+                <label for="city">Miestas</label>
+                <input type="text" class="form-control" name="city" placeholder="Miestas" required>
+            </div>
 
                 <!-- Adresas -->
                 <div class="form-group col-sm-12">
