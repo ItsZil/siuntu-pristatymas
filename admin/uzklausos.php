@@ -126,30 +126,23 @@ if (!$dbc)
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Užklausa1</td>
-                <td>Užklausos tekstas</td>
-                <td>
-                    <button class="btn btn-primary me-1">Atsakyti</button>
-                    <button class="btn btn-primary ms-3">Ištrinti</button>
+            <?php
+            $sql="SELECT * FROM requests";
+            $result=mysqli_query($dbc, $sql);
+            if(mysqli_num_rows($result)>0){
+                while($row=mysqli_fetch_assoc($result)){
+                    echo
+                    "<tr>
+                        <td>".$row['topic']."</td>
+                        <td style='max-width: 500px'>".$row['request']."</td>
+                        <td>
+                    <button class='btn btn-primary me-1'>Atsakyti</button>
+                    <button class='btn btn-primary ms-3'>Ištrinti</button>
                 </td>
-            </tr
-            <tr>
-                <td>Užklausa2</td>
-                <td>Užklausos tekstas</td>
-                <td>
-                    <button class="btn btn-primary me-1">Atsakyti</button>
-                    <button class="btn btn-primary ms-3">Ištrinti</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Užklausa3</td>
-                <td>Užklausos tekstas</td>
-                <td>
-                    <button class="btn btn-primary me-1">Atsakyti</button>
-                    <button class="btn btn-primary ms-3">Ištrinti</button>
-                </td>
-            </tr>
+                    </tr>";
+                }
+            }
+            ?>
             </tbody>
         </table>
     </div>

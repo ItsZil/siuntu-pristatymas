@@ -34,6 +34,59 @@ if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
 }
+
+$name=$name_err="";
+$email=$email_err="";
+$phone=$phone_err="";
+$topic=$topic_err="";
+$request=$request_err="";
+
+$message="";
+
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+    if(empty($_POST['name'])){
+        $name_err="Įveskite vardą";
+    } else{
+        $name=trim($_POST['name']);
+    }
+    if(empty($_POST['email'])){
+        $email_err="Įveskite el. paštą";
+    } else{
+        $email=trim($_POST['email']);
+    }
+    if(empty($_POST['phone'])){
+        $phone_err="Įveskite telefono numerį";
+    } else{
+        $phone=trim($_POST['phone']);
+    }
+    if(empty($_POST['topic'])){
+        $topic_err="Įveskite temą";
+    } else{
+        $topic=trim($_POST['topic']);
+    }
+    if(empty($_POST['request'])){
+        $request_err="Įveskite savo klausimą";
+    } else{
+        $request=trim($_POST['request']);
+    }
+    if(empty($name_err) && empty($email_err) && empty($phone_err) && empty($topic_err) && empty($request_err)){
+        $sql="INSERT INTO requests (name, email, phone, topic, request) VALUES (?, ?, ?, ?, ?)";
+        if($stmt=mysqli_prepare($dbc, $sql)){
+            mysqli_stmt_bind_param($stmt, "sssss", $param_name, $param_email, $param_phone, $param_topic, $param_request);
+            $param_name=$name;
+            $param_email=$email;
+            $param_phone=$phone;
+            $param_topic=$topic;
+            $param_request=$request;
+            if(mysqli_stmt_execute($stmt)){
+                $message="Klausimas užregistruotas";
+            }
+            else{
+                $message="Įvyko klaida, bandykite dar kartą";
+            }
+        }
+    }
+}
 ?>
 
 <!doctype html>
@@ -121,7 +174,7 @@ if (!$dbc)
                 <form method="post">
                     <div class="mb-3">
                         <label for="vardas" class="form-label">Jūsų vardas</label>
-                        <input type="text" class="form-control" id="vardas" name="vardas" maxlength="50" required>
+                        <input type="text" class="form-control" id="name" name="name" maxlength="50" required>
                         <br>
                         <label for="email" class="form-label">El. paštas</label>
                         <input type="email" class="form-control" id="email" name="email" maxlength="75" required>
@@ -132,11 +185,12 @@ if (!$dbc)
                         <label for="topic" class="form-label">Tema</label>
                         <input type="text" class="form-control" id="topic" name="topic" maxlength="50" required>
                         <br>
-                        <label for="klausimas" class="form-label">Įveskite savo klausimą žemiau:</label>
-                        <textarea class="form-control" id="klausimas" name="klausimas" rows="3" required></textarea>
+                        <label for="request" class="form-label">Įveskite savo klausimą žemiau:</label>
+                        <textarea class="form-control" id="request" name="request" rows="3" required></textarea>
                     </div>
                     <input type='submit' name='send_question' class='btn btn-primary float-end' value="Siųsti užklausą">
                 </form>
+                <?php if(!empty($message)) echo "<p>$message</p>"?>
             </div>
         </div>
     </div>
