@@ -56,11 +56,12 @@ if(isset($_POST['submit']))
 	$count=count($_POST['id']);
 	
 for($i=0;$i<$count;$i++){
-$sql1="UPDATE packages SET warehouse='" . $_POST['warehouse'][$i] . "' WHERE id='" . $_POST['id'][$i] . "'";
+$sql1="UPDATE packages SET warehouse_id='" . $_POST['warehouse'][$i] . "' WHERE id='" . $_POST['id'][$i] . "'";
 $result1=mysqli_query($dbc, $sql1);
 header('location: siuntu_priskyrimas_sandeliui.php');
 }
 }
+
 
 
 ?>
@@ -169,12 +170,23 @@ header('location: siuntu_priskyrimas_sandeliui.php');
                         <td>
                                 <?php 
                                 echo "<select name='warehouse[]' id='warehouse' class='form-control' value='Pasirinkite sandėlį'>";
-                                echo '<option value="'.$rows['warehouse'].'">'.$rows['warehouse'].'</option>';
-                        
-                                for($i=0;$i<$count;$i++){
-                                    echo '<option value="'.$warehouses[$i]['name'].'">'.$warehouses[$i]['name'].'</option>';
+                                if($rows['warehouse_id'] > 0){
+                                for($j=0;$j<$warehousecount;$j++){
+                                    if($rows['warehouse_id'] == $warehouses[$j]['id']){
+                                    echo '<option value="'.$rows['warehouse_id'].'">'.$warehouses[$j]['name'].'</option>';
+                                    $selected=$warehouses[$j]['name'];
+                                    }
+                                    }
+                                }
+                                else
+                                    echo '<option value="">Pasirinkite sandėlį</option>';
+
+                                for($i=0;$i<$warehousecount;$i++){
+                                    if($warehouses[$i]['name'] != $selected)
+                                    echo '<option value="'.$warehouses[$i]['id'].'">'.$warehouses[$i]['name'].'</option>';
                                 }
                                 echo "</select>";
+                                unset($selected);
                                 ?>
                         </td>
 

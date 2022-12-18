@@ -54,7 +54,7 @@ if(isset($_POST['submit_courier']))
 	$number=count($_POST['id']);
 	
 for($i=0;$i<$number;$i++){
-$sql1="UPDATE packages SET courier='" . $_POST['courier'][$i] . "' WHERE id='" . $_POST['id'][$i] . "'";
+$sql1="UPDATE packages SET courier_id='" . $_POST['courier'][$i] . "' WHERE id='" . $_POST['id'][$i] . "'";
 $result1=mysqli_query($dbc, $sql1);
 header('location: siuntu_priskyrimas_kurjeriui.php');
 }
@@ -157,19 +157,30 @@ header('location: siuntu_priskyrimas_kurjeriui.php');
                     </tr>
                     </thead>
                     <tbody>
-                                            <?php
+                        <?php
                         while($rows=mysqli_fetch_array($result)){
                         ?>
                         <tr>
                         <td>
                                 <?php 
                                 echo "<select name='courier[]' id='courier' class='form-control' value='Pasirinkite kurjerį'>";
-                                echo '<option value="'.$rows['courier'].'">'.$rows['courier'].'</option>';
-                        
+                                if($rows['courier_id'] > 0){
+                                for($j=0;$j<$couriercount;$j++){
+                                    if($rows['courier_id'] == $couriers[$j]['id']){
+                                    echo '<option value="'.$rows['courier_id'].'">'.$couriers[$j]['username'].'</option>';
+                                    $selected=$couriers[$j]['username'];
+                                    }
+                                    }
+                                }
+                                else
+                                    echo '<option value="">Pasirinkite kurjerį</option>';
+
                                 for($i=0;$i<$couriercount;$i++){
-                                    echo '<option value="'.$couriers[$i]['username'].'">'.$couriers[$i]['username'].'</option>';
+                                    if($couriers[$i]['username'] != $selected)
+                                    echo '<option value="'.$couriers[$i]['id'].'">'.$couriers[$i]['username'].'</option>';
                                 }
                                 echo "</select>";
+                                unset($selected)
                                 ?>
                         </td>
 
@@ -207,7 +218,7 @@ header('location: siuntu_priskyrimas_kurjeriui.php');
 
                     </tbody>
                 </table>
-                <input id='button' type='submit' name='submit_courier' class='btn btn-primary float-end' value="Išsaugoti">
+                <input id='button' type='submit' name='submit_courier' class='btn btn-primary float-end' value="Išsaugoti"">
             </div>
         </form>
     <?php
