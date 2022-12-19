@@ -37,10 +37,6 @@ else
     $user_id = $_SESSION["id"];
     $access_level = $_SESSION["access_level"];
 }
-if (isset($_POST["select_packages"]))
-{
-    $_SESSION["show_map"] = 1;
-}
 if (!$dbc)
 {
     die ("Nepavyko prisijungti prie duomenų bazės:" .mysqli_error($dbc));
@@ -64,14 +60,18 @@ if(isset($_POST['select_packages']))
 {
 	$count=count($_POST['selected_packages']);
     $packageids=$_POST['selected_packages'];
-
-	
 for($i=0;$i<$count;$i++){
     $sql1="UPDATE packages SET courier_id='".$_SESSION['id']."', status='Siunta išvežta pristatymui' WHERE id='" . $packageids[$i] . "'";
     $result1=mysqli_query($dbc, $sql1);
     header('location: kurjeris.php');
-    }
 }
+}
+
+
+    //var_dump($rows['to_address']);
+    //die();
+
+
 ?>
 
 <!doctype html>
@@ -81,6 +81,69 @@ for($i=0;$i<$count;$i++){
         include_once "../includes/header.php";
         echo getHeader("Kurjeris");
     ?>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmQqsBFDyL32XEANrzHiAg76DbARbjmtU"></script>
+    <style>#container {
+  height: 100%;
+  display: flex;
+}
+
+#sidebar {
+  flex-basis: 15rem;
+  flex-grow: 1;
+  padding: 1rem;
+  max-width: 30rem;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#map {
+  flex-basis: 0;
+  flex-grow: 4;
+  height: 100%;
+}
+
+#floating-panel {
+  position: absolute;
+  top: 10px;
+  left: 25%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: "Roboto", "sans-serif";
+  line-height: 30px;
+  padding-left: 10px;
+}
+
+#floating-panel {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  padding: 5px;
+  font-size: 14px;
+  text-align: center;
+  line-height: 30px;
+  height: auto;
+}
+
+#map {
+  flex: auto;
+}
+
+#sidebar {
+  flex: 0 1 auto;
+  padding: 0;
+}
+#sidebar > div {
+  padding: 0.5rem;
+}</style>
 </head>
 <script>
 
@@ -243,18 +306,141 @@ for($i=0;$i<$count;$i++){
             </div>
         </div>
     </div>
+    <div class="container">
+   <div id="floating-panel">
+        <strong>Start:</strong>
+        <select id="start">
+          <option value="kaunas">Kaunas</option>
+          <option value="ignalina">Ignalina</option>
+        </select>
+        <br />
+        <strong>End:</strong>
+        <select id="end">
+          <option value="vilnius">Vilnius</option>
+          <option value="utena">Utena</option>
+        </select>
+      </div>
+    </div>
     <?php
-    if(isset($_SESSION['show_map']))
-    {
-        echo "<div class='container' id='map'>
-        <iframe id='iframe' src='https://storage.googleapis.com/maps-solutions-pg19vlu2ft/locator-plus/aoi4/locator-plus.html' width='100%' height='450' style='border:0;' loading='lazy'>
-        </iframe>
-    </div>";
+$apiKey = 'AIzaSyBmQqsBFDyL32XEANrzHiAg76DbARbjmtU';
+$addresses = ['Vilnius', 'Studentų g. 53, Kaunas, 50299', 'Dariaus ir Girėno g. 6, Alytus, 62137', 'Aušros g. 15, Vidiškės'];
+$origin = urlencode(reset($addresses)); // starting point
+$destination = urlencode(end($addresses)); // final destination
+$waypoints = ""; // intermediate stops
+
+// build the waypoints string
+array_pop($addresses); // remove the final destination from the array
+array_shift($addresses); // remove the starting point from the array
+foreach ($addresses as $address) {
+  $waypoints .= urlencode($address) . "|";
+}
+$dirs = array();
+$url = "https://maps.googleapis.com/maps/api/directions/json?origin=" . $origin . "&destination=" . $destination . "&waypoints=" . $waypoints . "&key=" . $apiKey;
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $url,
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+$responseArray = json_decode($response, true);
+$polylines = $responseArray['routes'][0]['overview_polyline']['points'];
+$routes=$responseArray['routes'];
+foreach ($routes as $route) {
+  $legs = $route['legs'];
+  $polyline = $route['overview_polyline']['points'];
+
+  foreach ($legs as $leg) {
+    $steps = $leg['steps'];
+
+    foreach ($steps as $step) {
+      array_push($dirs, $step['html_instructions']. "\n");
     }
+  }
+}
 
     ?>
-    <?php
-        include_once "../includes/footer.html";
+
+
+<html>
+  <head>
+    <style type="text/css">
+      #map { height: 400px; width: 100%; }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $apiKey; ?>"></script>
+    <script type="text/javascript">
+      function initMap() {
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+  const directionsService = new google.maps.DirectionsService();
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 7,
+    center: { lat: 55.16, lng: 23.88 },
+    disableDefaultUI: true,
+  });
+
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById("sidebar"));
+
+  const control = document.getElementById("floating-panel");
+
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+  const onChangeHandler = function () {
+    calculateAndDisplayRoute(directionsService, directionsRenderer);
+  };
+
+  document.getElementById("start").addEventListener("change", onChangeHandler);
+  document.getElementById("end").addEventListener("change", onChangeHandler);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  const start = document.getElementById("start").value;
+  const end = document.getElementById("end").value;
+
+  directionsService
+    .route({
+      origin: 'Vilnius',
+      destination: 'Vilnius',
+      waypoints: [
+        {location: 'Studentų g. 53, Kaunas, 50299',stopover: true},
+        {location: 'Dariaus ir Girėno g. 6, Alytus, 62137',stopover: true},
+        {location: 'Aušros g. 15, Vidiškės, 30233',stopover: true},
+        
+    ],
+      travelMode: google.maps.TravelMode.DRIVING,
+    })
+    .then((response) => {
+      directionsRenderer.setDirections(response);
+    })
+    .catch((e) => window.alert("Directions request failed due to " + status));
+}
+
+window.initMap = initMap;
+    </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmQqsBFDyL32XEANrzHiAg76DbARbjmtU&callback=initMap&v=weekly"defer></script>
+<div id="container">
+      <div id="map" style="height: 650px; width: 800px;"></div>
+      <div id="sidebar"></div>
+    </div>
+</div>
+
+        <?php
+include_once "../includes/footer.html";
+unset($_SESSION['addresses']);
     ?>
 </body>
 </html>
